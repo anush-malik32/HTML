@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dog Adoption Application</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f8fb;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .inline {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .checkbox-group {
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .note {
+            font-size: 13px;
+            color: gray;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Adoption Form – Meet Your New Companion 🐾</h1>
+
+    <form>
+
+        <!-- Basic Info -->
+        <label for="name">Full Name *</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="email">Email Address *</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="contact">Contact Number *</label>
+        <input type="tel" id="contact" name="contact" required>
+        <div class="note">Your contact number will remain confidential.</div>
+
+        <!-- Gender -->
+        <label>Gender *</label><br>
+        <div class="inline">
+            <input type="radio" name="gender" value="Female" required> Female
+        </div>
+        <div class="inline">
+            <input type="radio" name="gender" value="Male"> Male
+        </div>
+        <div class="inline">
+            <input type="radio" name="gender" value="Prefer not to say"> Prefer not to say
+        </div>
+
+        <br><br>
+
+        <!-- Dog Preference -->
+        <label>Preferred Dog Breed(s)</label>
+
+        <div class="checkbox-group">
+            <input type="checkbox" name="breed" value="Golden Retriever"> Golden Retriever<br>
+            <input type="checkbox" name="breed" value="Labrador"> Labrador<br>
+            <input type="checkbox" name="breed" value="German Shepherd"> German Shepherd<br>
+            <input type="checkbox" name="breed" value="Beagle"> Beagle<br>
+            <input type="checkbox" name="breed" value="Mixed Breed"> Mixed Breed<br>
+        </div>
+
+        <label for="otherBreed">If not listed, write your preferred breed:</label>
+        <input type="text" id="otherBreed" name="otherBreed" placeholder="Enter custom dog breed">
+
+        <!-- Lifestyle Information -->
+        <label for="homeType">Type of Home *</label>
+        <select id="homeType" name="homeType" required>
+            <option value="">-- Select --</option>
+            <option>Apartment</option>
+            <option>House with yard</option>
+            <option>Farm / Large Property</option>
+            <option>Other</option>
+        </select>
+
+        <label for="experience">Do you have previous experience with dogs?</label>
+        <textarea id="experience" name="experience" placeholder="Tell us about your experience..."></textarea>
+
+        <label for="whyAdopt">Why do you want to adopt a dog? *</label>
+        <textarea id="whyAdopt" name="whyAdopt" required placeholder="Share your motivation..."></textarea>
+
+        <label for="additionalInfo">Any additional information you'd like to share?</label>
+        <textarea id="additionalInfo" name="additionalInfo" placeholder="Anything else we should know..."></textarea>
+
+        <button type="submit">Submit Application</button>
+
+    </form>
+</div>
+
+</body>
+</html>
