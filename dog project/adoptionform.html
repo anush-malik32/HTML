@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, san-serif ;
+            background-color: #f4f8fb;
+            margin: 0;
+        }
+        h1{
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Adoption Form To Meet Your New Companion</h1>
@@ -18,9 +32,22 @@
         <input type="radio" id="female" name="gender"
 value="Female">Female<br>
         <input type="radio" id="male" name="gender"
-value="Male">Male<br><br>
-        <label>Favourite Dog</label><br>
-        <input type="checkbox" id="dog" value="Golden Retriever">Golden Retreiver<br>
+value="Male">Male<br>
+        <input type="radio" name="gender" 
+value="Prefer not to say"> Prefer not to say<br><br>
+         <label style="font-weight: bold;">Preferred Dog Breed(s)</label>
+
+        <div class="checkbox-group">
+            <input type="checkbox" name="breed" value="Golden Retriever"> Golden Retriever<br>
+            <input type="checkbox" name="breed" value="Labrador"> Labrador<br>
+            <input type="checkbox" name="breed" value="German Shepherd"> German Shepherd<br>
+            <input type="checkbox" name="breed" value="Beagle"> Beagle<br>
+            <input type="checkbox" name="breed" value="Mixed Breed"> Mixed Breed<br>
+        </div>
+
+        <label for="otherBreed">If not listed, write your preferred breed:</label>
+        <input type="text" id="otherBreed" name="otherBreed" placeholder="Enter custom dog breed">
+
     </form>
 </body>
 </html>
