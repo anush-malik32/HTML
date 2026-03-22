@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌊 Ocean Container Experience</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  background: linear-gradient(to bottom, #001f3f, #003f5c, #0074D9);
+  color:white;
+  font-family: 'Segoe UI';
+  overflow-x:hidden;
+}
+
+.hero {
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+}
+
+.title {
+  font-size:4rem;
+  animation: floatText 3s infinite alternate;
+}
+
+@keyframes floatText {
+  from { transform: translateY(0); }
+  to { transform: translateY(-20px); }
+}
+
+.bubble {
+  position:absolute;
+  bottom:-50px;
+  width:10px;
+  height:10px;
+  background:rgba(255,255,255,0.6);
+  border-radius:50%;
+  animation: rise linear infinite;
+}
+
+@keyframes rise {
+  to {
+    transform: translateY(-110vh);
+    opacity:0;
+  }
+}
+
+.card-ocean {
+  background: rgba(0,0,50,0.6);
+  border-radius:20px;
+  backdrop-filter: blur(10px);
+  transition:0.4s;
+}
+
+.card-ocean:hover {
+  transform: scale(1.1) rotate(1deg);
+}
+
+.parallax {
+  background-image:url('https://picsum.photos/1920/1080?water');
+  background-attachment:fixed;
+  height:400px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn-ocean {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  border:none;
+  color:white;
+  box-shadow:0 0 15px #00c6ff;
+}
+
+.btn-ocean:hover {
+  transform:scale(1.1);
+}
+
+.fish {
+  position:absolute;
+  font-size:2rem;
+  animation: swim 10s linear infinite;
+}
+
+@keyframes swim {
+  from { transform: translateX(-100px); }
+  to { transform: translateX(110vw); }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="container-fluid hero" id="hero">
+  <div>
+    <div class="title">🌊 Ocean World</div>
+    <p>Dive into Bootstrap Containers</p>
+    <button class="btn btn-ocean" onclick="scrollDown()">Dive In ↓</button>
+  </div>
+</div>
+
+<!-- INFO CARDS -->
+<div class="container my-5" id="section1">
+  <h2 class="text-center mb-4">Explore the Ocean</h2>
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card-ocean p-4 text-center">
+        <h4>🐠 Fish</h4>
+        <p>Discover colorful marine life.</p>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Fish')">Learn More</button>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card-ocean p-4 text-center">
+        <h4>🐋 Whales</h4>
+        <p>The giants of the sea.</p>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Whale')">Learn More</button>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card-ocean p-4 text-center">
+        <h4>🦑 Squid</h4>
+        <p>Mysterious deep sea creatures.</p>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Squid')">Learn More</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FULL WIDTH -->
+<div class="container-fluid text-center py-5" style="background:#001a33">
+  <h2>🌊 Deep Ocean Zone</h2>
+  <button class="btn btn-ocean" onclick="changeTheme()">Change Ocean Color</button>
+</div>
+
+<!-- PARALLAX -->
+<div class="container-fluid parallax">
+  <h1>🌌 Deep Sea</h1>
+</div>
+
+<!-- GAME -->
+<div class="container text-center my-5">
+  <h2>Catch the Fish 🎯</h2>
+  <p>Click fish to score!</p>
+  <div id="gameArea" style="height:200px; position:relative;"></div>
+  <h4>Score: <span id="score">0</span></h4>
+</div>
+
+<!-- BREAKPOINT DEMO -->
+<div class="container-sm bg-light text-dark p-2">Small Container</div>
+<div class="container-md bg-secondary p-2">Medium Container</div>
+<div class="container-lg bg-info p-2">Large Container</div>
+<div class="container-xl bg-success p-2">Extra Large Container</div>
+
+<!-- FOOTER -->
+<div class="container text-center my-5">
+  <h3>🌊 Ocean Complete 🌊</h3>
+</div>
+
+<script>
+
+// ================= JAVASCRIPT =================
+
+// Scroll
+function scrollDown() {
+  document.getElementById('section1').scrollIntoView({behavior:'smooth'});
+}
+
+// Links
+function go(url) {
+  window.open(url,'_blank');
+}
+
+// Theme changer
+function changeTheme() {
+  document.body.style.background = `linear-gradient(to bottom, #${Math.floor(Math.random()*999999)}, #001f3f)`;
+}
+
+// Bubble generator
+function createBubbles() {
+  const hero = document.getElementById('hero');
+  for(let i=0;i<40;i++){
+    const b=document.createElement('div');
+    b.className='bubble';
+    b.style.left=Math.random()*100+'%';
+    b.style.animationDuration=(Math.random()*5+3)+'s';
+    hero.appendChild(b);
+  }
+}
+
+// Fish animation
+function createFish(){
+  for(let i=0;i<5;i++){
+    const f=document.createElement('div');
+    f.className='fish';
+    f.innerHTML='🐟';
+    f.style.top=Math.random()*80+'%';
+    f.style.animationDuration=(Math.random()*10+5)+'s';
+    document.body.appendChild(f);
+  }
+}
+
+// GAME
+let score=0;
+function spawnFish(){
+  const area=document.getElementById('gameArea');
+  const fish=document.createElement('div');
+  fish.innerHTML='🐠';
+  fish.style.position='absolute';
+  fish.style.left=Math.random()*90+'%';
+  fish.style.top=Math.random()*80+'%';
+  fish.style.cursor='pointer';
+
+  fish.onclick=function(){
+    score++;
+    document.getElementById('score').innerText=score;
+    fish.remove();
+  }
+
+  area.appendChild(fish);
+
+  setTimeout(()=>fish.remove(),2000);
+}
+
+setInterval(spawnFish,1000);
+
+createBubbles();
+createFish();
+
+// ============================================
+
+</script>
+
+</body>
+</html>
