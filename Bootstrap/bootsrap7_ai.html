@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌊 Realistic Ocean Experience</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  background: linear-gradient(to bottom, #00111a, #002b36, #003f5c, #00111a);
+  color:white;
+  font-family:'Segoe UI';
+  overflow-x:hidden;
+}
+
+/* HERO */
+.hero {
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero video {
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:-1;
+  filter: brightness(0.5);
+}
+
+.title {
+  font-size:4rem;
+  text-shadow:0 0 20px rgba(0,200,255,0.8);
+}
+
+/* REALISTIC FISH */
+.big-fish {
+  position:absolute;
+  width:300px;
+  animation: swim 25s linear infinite;
+  opacity:0.9;
+}
+
+@keyframes swim {
+  from { transform: translateX(-400px) translateY(0); }
+  to { transform: translateX(110vw) translateY(-50px); }
+}
+
+/* DEPTH EFFECT */
+.depth-overlay {
+  position:absolute;
+  width:100%;
+  height:100%;
+  background: radial-gradient(circle at center, transparent, #000814);
+}
+
+/* GLASS CARD */
+.glass {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(15px);
+  border-radius:20px;
+  transition:0.4s;
+}
+
+.glass:hover {
+  transform:scale(1.05);
+}
+
+/* PARALLAX */
+.parallax {
+  background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e');
+  background-attachment:fixed;
+  background-size:cover;
+  height:500px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.btn-ocean {
+  background: linear-gradient(45deg, #00c6ff, #0072ff);
+  border:none;
+  color:white;
+  box-shadow:0 0 20px #00c6ff;
+}
+
+.btn-ocean:hover {
+  transform:scale(1.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HERO WITH REAL VIDEO -->
+<div class="container-fluid hero" id="hero">
+  <video autoplay muted loop>
+    <source src="https://www.w3schools.com/howto/rain.mp4" type="video/mp4">
+  </video>
+  <div class="depth-overlay"></div>
+
+  <div>
+    <h1 class="title">🌊 The Deep Ocean</h1>
+    <p>Experience realism with Bootstrap Containers</p>
+    <button class="btn btn-ocean" onclick="scrollDown()">Dive In</button>
+  </div>
+</div>
+
+<!-- BIG FISH IMAGES -->
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Clown_fish_in_the_Andaman_Coral_Reef.jpg" class="big-fish" style="top:30%;">
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Tuna_fish.jpg" class="big-fish" style="top:60%; animation-duration:35s;">
+
+<!-- INFO SECTION -->
+<div class="container my-5" id="section1">
+  <h2 class="text-center mb-4">Ocean Creatures</h2>
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="glass p-3 text-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6e/Giant_Manta_Ray.jpg" class="img-fluid rounded">
+        <h4 class="mt-2">Manta Ray</h4>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Manta_ray')">Explore</button>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="glass p-3 text-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/White_shark.jpg" class="img-fluid rounded">
+        <h4 class="mt-2">Shark</h4>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Shark')">Explore</button>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="glass p-3 text-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/77/Dolphin1.jpg" class="img-fluid rounded">
+        <h4 class="mt-2">Dolphin</h4>
+        <button class="btn btn-ocean" onclick="go('https://en.wikipedia.org/wiki/Dolphin')">Explore</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PARALLAX DEPTH -->
+<div class="container-fluid parallax">
+  <h1>🌌 Into the Abyss</h1>
+</div>
+
+<!-- INTERACTIVE GAME -->
+<div class="container text-center my-5">
+  <h2>Catch the Real Fish 🎯</h2>
+  <div id="game" style="height:300px; position:relative; background:#001f3f; border-radius:20px;"></div>
+  <h4>Score: <span id="score">0</span></h4>
+</div>
+
+<!-- FOOTER -->
+<div class="container text-center my-5">
+  <h3>🌊 Ocean Realism Complete 🌊</h3>
+</div>
+
+<script>
+
+// Scroll
+function scrollDown(){
+  document.getElementById('section1').scrollIntoView({behavior:'smooth'});
+}
+
+// Links
+function go(url){
+  window.open(url,'_blank');
+}
+
+// GAME WITH REAL IMAGES
+let score=0;
+function spawnFish(){
+  const game=document.getElementById('game');
+  const fish=document.createElement('img');
+  fish.src='https://upload.wikimedia.org/wikipedia/commons/3/3a/Clown_fish_in_the_Andaman_Coral_Reef.jpg';
+  fish.style.position='absolute';
+  fish.style.width='80px';
+  fish.style.left=Math.random()*90+'%';
+  fish.style.top=Math.random()*80+'%';
+  fish.style.cursor='pointer';
+  fish.style.borderRadius='10px';
+
+  fish.onclick=function(){
+    score++;
+    document.getElementById('score').innerText=score;
+    fish.remove();
+  }
+
+  game.appendChild(fish);
+  setTimeout(()=>fish.remove(),3000);
+}
+
+setInterval(spawnFish,1200);
+
+</script>
+
+</body>
+</html>

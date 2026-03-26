@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Quiz Game</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: radial-gradient(circle at top, #1a2a6c, #16222a);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+}
+
+.quiz-container {
+    max-width: 900px;
+    margin: auto;
+    margin-top: 40px;
+    background: rgba(0,0,0,0.7);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(0,255,200,0.4);
+}
+
+.option {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option:hover {
+    transform: scale(1.07);
+    background-color: #00c9ff !important;
+}
+
+.badge-area span {
+    margin: 5px;
+}
+
+.glow {
+    animation: glow 1s infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px #00ffc8; }
+    to { box-shadow: 0 0 25px #00ffc8; }
+}
+
+/* Sparkles */
+.sparkle {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: gold;
+    border-radius: 50%;
+    animation: explode 0.8s forwards;
+}
+
+@keyframes explode {
+    to {
+        transform: translate(var(--x), var(--y)) scale(0);
+        opacity: 0;
+    }
+}
+
+.mini-game {
+    display: none;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.target {
+    width: 60px;
+    height: 60px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container text-center">
+    <h1 class="mb-4">🎮 Ultimate Reward Quiz</h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="w-75">
+            <div class="progress">
+                <div id="progressBar" class="progress-bar bg-success"></div>
+            </div>
+        </div>
+        <div class="badge-area">
+            <span id="badge1" class="badge bg-secondary">🌱 Beginner</span>
+            <span id="badge2" class="badge bg-secondary">🔥 Skilled</span>
+            <span id="badge3" class="badge bg-secondary">👑 Master</span>
+        </div>
+    </div>
+
+    <h4 id="question"></h4>
+    <div id="options" class="mt-4"></div>
+
+    <h5 class="mt-3">Score: <span id="score">0</span> | 🔥 Streak: <span id="streak">0</span></h5>
+
+    <div id="miniGame" class="mini-game">
+        <h3>🎯 BONUS GAME! Click the moving target!</h3>
+    </div>
+</div>
+
+<script>
+const quiz = [
+    { q: "What does HTML stand for?", options: ["Hyper Trainer Marking Language", "Hyper Text Markup Language", "Hyper Text Marketing Language", "Hyper Tool Multi Language"], answer: 1 },
+    { q: "Which tag creates a hyperlink?", options: ["<a>", "<link>", "<href>", "<url>"], answer: 0 },
+    { q: "Which tag is used for images?", options: ["<img>", "<image>", "<pic>", "<src>"], answer: 0 },
+    { q: "CSS stands for?", options: ["Color Style Sheets", "Cascading Style Sheets", "Creative Style System", "Computer Style Sheet"], answer: 1 },
+    { q: "Which property changes text color?", options: ["font-color", "text-color", "color", "fgcolor"], answer: 2 },
+    { q: "JavaScript runs in?", options: ["Server", "Browser", "Database", "Compiler"], answer: 1 },
+    { q: "Which planet is Red Planet?", options: ["Earth", "Mars", "Venus", "Jupiter"], answer: 1 },
+    { q: "Largest ocean?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], answer: 2 }
+];
+
+let current = 0;
+let score = 0;
+let streak = 0;
+
+function loadQuestion() {
+    document.getElementById("question").innerText = quiz[current].q;
+    let html = "";
+    quiz[current].options.forEach((opt, i) => {
+        html += `<div class="card option bg-dark p-2 mb-2" onclick="selectAnswer(${i})">${opt}</div>`;
+    });
+    document.getElementById("options").innerHTML = html;
+    updateProgress();
+}
+
+function selectAnswer(i) {
+    if(i === quiz[current].answer) {
+        score++;
+        streak++;
+        showSparkles();
+    } else {
+        streak = 0;
+    }
+
+    document.getElementById("score").innerText = score;
+    document.getElementById("streak").innerText = streak;
+
+    if(streak === 3) {
+        launchMiniGame();
+        streak = 0;
+    }
+
+    current++;
+    unlockBadges();
+
+    if(current < quiz.length) {
+        setTimeout(loadQuestion, 500);
+    } else {
+        document.querySelector(".quiz-container").innerHTML = `<h2>🎉 Completed!</h2><h3>${score}/${quiz.length}</h3>`;
+    }
+}
+
+function updateProgress() {
+    let percent = (current / quiz.length) * 100;
+    document.getElementById("progressBar").style.width = percent + "%";
+}
+
+function unlockBadges() {
+    if(current >= 2) document.getElementById("badge1").className = "badge bg-success glow";
+    if(current >= 4) document.getElementById("badge2").className = "badge bg-warning glow";
+    if(current >= 6) document.getElementById("badge3").className = "badge bg-danger glow";
+}
+
+function showSparkles() {
+    for(let i=0;i<20;i++){
+        let s = document.createElement("div");
+        s.className = "sparkle";
+        s.style.left = window.innerWidth/2 + "px";
+        s.style.top = window.innerHeight/2 + "px";
+        s.style.setProperty('--x', (Math.random()*200-100)+'px');
+        s.style.setProperty('--y', (Math.random()*200-100)+'px');
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),800);
+    }
+}
+
+function launchMiniGame() {
+    let game = document.getElementById("miniGame");
+    game.style.display = "block";
+
+    let target = document.createElement("div");
+    target.className = "target";
+    document.body.appendChild(target);
+
+    moveTarget(target);
+
+    target.onclick = () => {
+        score += 2;
+        document.getElementById("score").innerText = score;
+        target.remove();
+        game.style.display = "none";
+    };
+}
+
+function moveTarget(t) {
+    setInterval(()=>{
+        t.style.left = Math.random()*window.innerWidth + "px";
+        t.style.top = Math.random()*window.innerHeight + "px";
+    }, 700);
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>

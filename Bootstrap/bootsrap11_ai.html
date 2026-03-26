@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fun Quiz Game</title>
+
+<!-- Bootstrap CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+.quiz-container {
+    max-width: 800px;
+    margin: auto;
+    margin-top: 50px;
+    background: rgba(0,0,0,0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(0,255,200,0.3);
+}
+
+.option {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option:hover {
+    transform: scale(1.05);
+    background-color: #17a2b8 !important;
+}
+
+.badge-area span {
+    margin: 5px;
+}
+
+.glow {
+    animation: glow 1s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px #00ffc8; }
+    to { box-shadow: 0 0 20px #00ffc8; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container text-center">
+    <h1 class="mb-4">🚀 Ultimate Fun Quiz</h1>
+
+    <!-- Progress + Badges -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="w-75">
+            <div class="progress">
+                <div id="progressBar" class="progress-bar bg-success" style="width: 0%"></div>
+            </div>
+        </div>
+        <div class="badge-area">
+            <span id="badge1" class="badge bg-secondary">🏅 Beginner</span>
+            <span id="badge2" class="badge bg-secondary">🔥 Intermediate</span>
+            <span id="badge3" class="badge bg-secondary">👑 Master</span>
+        </div>
+    </div>
+
+    <!-- Question -->
+    <h4 id="question">Question here</h4>
+
+    <!-- Options -->
+    <div id="options" class="mt-4"></div>
+
+    <!-- Score -->
+    <h5 class="mt-4">Score: <span id="score">0</span></h5>
+</div>
+
+<script>
+const quiz = [
+    { q: "What is the capital of France?", options: ["Berlin", "Paris", "Madrid", "Rome"], answer: 1 },
+    { q: "Which planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter", "Venus"], answer: 1 },
+    { q: "Which language runs in a browser?", options: ["Java", "C", "Python", "JavaScript"], answer: 3 },
+    { q: "What does CSS stand for?", options: ["Color Style Sheets", "Cascading Style Sheets", "Cool Style Sheets", "Creative Style System"], answer: 1 },
+    { q: "Which is the largest ocean?", options: ["Atlantic", "Indian", "Pacific", "Arctic"], answer: 2 },
+    { q: "Which company created Windows?", options: ["Apple", "Microsoft", "Google", "IBM"], answer: 1 }
+];
+
+let current = 0;
+let score = 0;
+
+function loadQuestion() {
+    document.getElementById("question").innerText = quiz[current].q;
+    let optionsHTML = "";
+
+    quiz[current].options.forEach((opt, index) => {
+        optionsHTML += `<div class="card option bg-dark text-white p-2 mb-2" onclick="selectAnswer(${index})">${opt}</div>`;
+    });
+
+    document.getElementById("options").innerHTML = optionsHTML;
+    updateProgress();
+}
+
+function selectAnswer(index) {
+    if(index === quiz[current].answer) {
+        score++;
+        document.getElementById("score").innerText = score;
+    }
+
+    current++;
+
+    if(current < quiz.length) {
+        unlockBadges();
+        loadQuestion();
+    } else {
+        document.querySelector(".quiz-container").innerHTML = `<h2>🎉 Quiz Completed!</h2><h3>Your Score: ${score}/${quiz.length}</h3>`;
+    }
+}
+
+function updateProgress() {
+    let progress = ((current) / quiz.length) * 100;
+    document.getElementById("progressBar").style.width = progress + "%";
+}
+
+function unlockBadges() {
+    if(current >= 2) {
+        let b1 = document.getElementById("badge1");
+        b1.classList.remove("bg-secondary");
+        b1.classList.add("bg-success", "glow");
+    }
+
+    if(current >= 4) {
+        let b2 = document.getElementById("badge2");
+        b2.classList.remove("bg-secondary");
+        b2.classList.add("bg-warning", "glow");
+    }
+
+    if(current >= 6) {
+        let b3 = document.getElementById("badge3");
+        b3.classList.remove("bg-secondary");
+        b3.classList.add("bg-danger", "glow");
+    }
+}
+
+loadQuestion();
+</script>
+
+</body>
+</html>
