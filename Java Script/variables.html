@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>JavaScript Variables</h1>
+    <p>Sum of two Numbers</p>
+    <p id="result"></p>
+    <p>Product of two Numbers</p>
+    <p id="product"></p>
+    <p>Quotient of two Numbers</p>
+    <p id="quotient"></p>
+    <p>Remainder of two Numbers</p>
+    <p id="remainder"></p>
+    <script>
+    
+        var num1 = 5;
+        var num2 = 6;
+        var sum = num1 + num2
+        var product = num1 * num2
+        var quotient = num2/num1
+        var remainder = num2 % num1
+        document.getElementById("result").innerHTML = "The total sum is: " + sum;
+        document.getElementById("product").innerHTML = "The total product is: " + product
+        document.getElementById("quotient").innerHTML = "The total quotient is: " + quotient
+        document.getElementById("remainder").innerHTML = "The total remainder is: " + remainder
+    </script>
+</body>
+</html>
