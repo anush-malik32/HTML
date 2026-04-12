@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>A function can access variables defined inside the function</p>
+    <button type="button" onclick="myFunction()" style=" background-color: yellow;" id="btn">Click Me!</button>
+    <p id="demo"></p>
+
+    <button type="button" onclick="myFunction1()">Exponential</button>
+    <p id="demo1"></p>
+
+    <button type="button" onclick="myFunction2()">Remainder</button>
+    <p id="demo2"></p>
+    <script>
+        var b = 5;
+        function myFunction() {
+            var a = 4;
+            document.getElementById("demo").innerHTML = b * a;
+            document.getElementById("btn").style.backgroundColor = "white";
+        }
+
+        var d = 3
+        function myFunction1() {
+            var c = 2;
+            document.getElementById("demo1").innerHTML = d**c;
+        }
+
+        var f = 7
+        function myFunction2() {
+            var e = 6;
+            document.getElementById("demo2").innerHTML = f % e;
+        }
+    </script>
+</body>
+</html>
