@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Objects and its Properties</h2>
+    <p>There are two different ways to access an object property</p>
+    <p>You can use .property or ["property"].</p>
+    <p id="demo"></p>
+    <p id="demo1"></p>
+    <script>
+        var person = {
+            firstName: "I",
+            age: 20,
+        };
+        var account = {
+            account_number: 1798,
+            account_balance: "$19000",
+            account_type: "Savings",
+            account_category: "Premium",
+            has_locker: false,
+            account_holder_name: "Anush, Malik",
+        }
+    document.getElementById("demo").innerHTML = person.firstName + " am " + person.age + " years old";
+    document.getElementById("demo1").innerHTML = "Hi " + account.account_holder_name + "." + "Your account number " + account.account_number + " has a current balance of " + account.account_balance + " and is a " + account.account_type + " account" + "." + " Also based on our records you having a locker is " + account.has_locker + "." + "Thank you for choosing " + account.account_category + ".";
+    </script>
+</body>
+</html>
