@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>a=4  <br><br>  
+       b=3</p>
+    <button type="button" onclick="myFunction()">a times a</button>
+    <p id="demo"></p>
+    <p>Adding a cube root</p>
+    <button type="button" onclick="myFunctionNew()">b cubed</button>
+    <p id="demo1"></p>
+    <p>I am going to add a divison problem</p>
+    <button type="button" onclick="myFunctionNewest()">a/b</button>
+    <p id="demo2"></p>
+    <script>
+        var a = 4;
+        var b = 3;
+        function myFunction() {
+            document.getElementById("demo").innerHTML = a*a;
+        }
+        function myFunctionNew() {
+            document.getElementById("demo1").innerHTML = b**3;
+        }
+        function myFunctionNewest() {
+            document.getElementById("demo2").innerHTML = a/b;
+        }
+    </script>
+</body>
+</html>
