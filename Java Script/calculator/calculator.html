@@ -50,13 +50,12 @@
         <div class="buttons">
             <button onclick="appendValue('+')">+</button>
             <button onclick="appendValue('-')">-</button>
-            <button onclick="appendValue('×')">×</button>
-            <button onclick="appendValue('÷')">÷</button>
-            <button onclick="appendValue('√')">√</button>
-            <button onclick="appendValue('x²')">x²</button>
+            <button onclick="appendValue('*')">×</button>
+            <button onclick="appendValue('/')">÷</button>
             <button onclick="appendValue('%')">%</button>
-            <button>clear</button>
-            <button>del</button>
+            <button onclick="clearDisplay()">clear</button>
+            <button onclick="deleteDisplay()">delete</button>
+            <button onclick="appendValue('**')">xˣ</button>
             <button onclick="appendValue('.')">.</button>
             <button onclick="appendValue('1')">1</button>
             <button onclick="appendValue('2')">2</button>
@@ -68,6 +67,7 @@
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
             <button onclick="appendValue('0')">0</button>
+            <button onclick="calculate()">=</button>
         </div>
     </div> 
     <script src="script.js"></script>
