@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Class</h2>
+    <p>How to use JavaScript Class.</p>
+    <p id="student1"></p>
+    <p id="student2"></p>
+
+    <script>
+        class Student {
+            constructor(name, year, grade, school) {
+                this.name = name;
+                this.year = year;
+                this.grade = grade;
+                this.school = school;
+            }
+            age() {
+            let date = new Date();
+            return date.getFullYear() - this.year;
+            }
+        }
+
+        const student1 = new Student("Riya" , 2014, 6, "Grandview Middle");
+        document.getElementById("student1").innerHTML = "My name is " +student1.name + ". I was born in " + student1.year + ". And my age is " + student1.age() + ". I study in grade " + student1.grade + " at " + student1.school;
+        
+        const student2 = new Student("Tina", 2018, 7, "Langston Heights");
+        document.getElementById("student2").innerHTML = "My name is " + student2.name + ". I was born in " + student2.year + ". And my age is " + student2.age()  + ". I study in grade " + student2.grade + " at " + student2.school;
+    </script>
+</body>
+</html>
