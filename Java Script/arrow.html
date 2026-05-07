@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>JavaScript Arrow Function</h2>
+    <p>This example shows an Arrow Function with a parmeter</p>
+    <p id="subtraction"></p>
+    <p id="result"></p>
+    <p id="multiply"></p>
+    <p id="divide"></p>
+    <p id="remainder"></p>
+    <p id="power"></p>
+    <script>
+        const add = (a,b) => a + b;
+        const subtraction = (a,b) => a - b;
+        const multiply = (a,b) => a*b;
+        const divide = (a,b) => a/b;
+        const remainder = (a,b) => a%b;
+        const power = (a,b) => a**b;
+        document.getElementById("result").innerHTML = "The sum of 4 and 6 is " + add(4,6);
+        document.getElementById("multiply").innerHTML = "The product of 4 and 6 is " + multiply(4,6);
+        document.getElementById("divide").innerHTML = "The quotient of 4 and 6 is " + divide(4,6);
+        document.getElementById("remainder").innerHTML = "The remainder of 4 and 6 is " + remainder(4,6);
+        document.getElementById("power").innerHTML = "4 raised to the power of 6 is " + power(4,6);
+        document.getElementById("subtraction").innerHTML ="6 subtracted from 4 is " + subtraction(4,6);
+    </script>
+</body>
+</html>
