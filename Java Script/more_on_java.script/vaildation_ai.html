@@ -1,0 +1,995 @@
+# Teen Social Platform - Full Single Page Project
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VibeVerse</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #141e30, #243b55);
+    overflow-x: hidden;
+    color: white;
+}
+
+/* =========================
+   COVER PAGE
+========================= */
+
+.cover-page {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.glow {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    filter: blur(50px);
+    animation: float 6s infinite alternate;
+}
+
+.glow:nth-child(1) {
+    top: -50px;
+    left: -50px;
+}
+
+.glow:nth-child(2) {
+    bottom: -50px;
+    right: -50px;
+}
+
+@keyframes float {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(30px);
+    }
+}
+
+.hero {
+    width: 100%;
+    max-width: 1200px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.hero-left h1 {
+    font-size: 70px;
+    margin-bottom: 20px;
+    background: linear-gradient(to right, #ff00cc, #3333ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-left p {
+    font-size: 22px;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.badge {
+    background: rgba(255,255,255,0.1);
+    padding: 12px 18px;
+    border-radius: 50px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Meme cards */
+
+.meme-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.meme-card {
+    background: rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+.meme-card:hover {
+    transform: scale(1.05);
+}
+
+.meme-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.meme-card h3 {
+    margin-top: 12px;
+}
+
+/* =========================
+   FORM SECTION
+========================= */
+
+.platform {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px 100px;
+}
+
+.container {
+    width: 420px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 25px;
+    padding: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0px 8px 30px rgba(0,0,0,0.4);
+}
+
+.container h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 35px;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(to right, #ff00cc, #3333ff);
+    color: white;
+    font-size: 17px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.03);
+}
+
+.alt-btn {
+    background: linear-gradient(to right, #00c9ff, #92fe9d);
+}
+
+.message {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.valid {
+    border: 3px solid limegreen;
+}
+
+.invalid {
+    border: 3px solid red;
+}
+
+#success {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(0,255,100,0.2);
+    border-radius: 12px;
+    text-align: center;
+}
+
+/* =========================
+   PROFILE SETTINGS
+========================= */
+
+.profile-settings {
+    display: none;
+    margin-top: 25px;
+}
+
+.profile-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: auto;
+    border: 4px solid white;
+}
+
+.profile-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-options {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.avatar-options img {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: 0.3s;
+}
+
+.avatar-options img:hover {
+    transform: scale(1.1);
+    border-color: cyan;
+}
+
+/* =========================
+   GAME SECTION
+========================= */
+
+.game-section {
+    display: none;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.game-section h1 {
+    margin-bottom: 20px;
+    font-size: 50px;
+}
+
+#gameArea {
+    width: 90%;
+    max-width: 700px;
+    height: 450px;
+    background: black;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    border: 4px solid yellow;
+}
+
+.player {
+    width: 55px;
+    height: 55px;
+    background: yellow;
+    border-radius: 50%;
+    position: absolute;
+    top: 200px;
+    left: 300px;
+}
+
+.enemy {
+    width: 45px;
+    height: 45px;
+    background: red;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.coin {
+    width: 25px;
+    height: 25px;
+    background: gold;
+    border-radius: 50%;
+    position: absolute;
+    box-shadow: 0 0 15px gold;
+}
+
+.score-board {
+    margin-top: 20px;
+    font-size: 28px;
+}
+
+.instructions {
+    margin-top: 15px;
+    color: #ddd;
+}
+
+@media(max-width: 900px) {
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-left h1 {
+        font-size: 50px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     COVER PAGE
+========================= -->
+
+<section class="cover-page">
+
+    <div class="glow"></div>
+    <div class="glow"></div>
+
+    <div class="hero">
+
+        <div class="hero-left">
+            <h1>VibeVerse</h1>
+
+            <p>
+                The internet's coolest teen social platform 🔥
+                Chat. Play. Share memes. Build your vibe.
+            </p>
+
+            <div class="badges">
+                <div class="badge">🔥 Trending</div>
+                <div class="badge">🎮 Built-in Games</div>
+                <div class="badge">📸 Custom Profiles</div>
+                <div class="badge">😂 Meme Energy</div>
+            </div>
+        </div>
+
+        <div class="meme-grid">
+
+            <div class="meme-card">
+                <img src="https://i.imgur.com/l49aYS3.jpeg">
+                <h3>"Bro really signed up 💀"</h3>
+            </div>
+
+            <div class="meme-card">
+                <img src="https://i.imgur.com/v4K5R9B.jpeg">
+                <h3>"No way this app is free 😭"</h3>
+            </div>
+
+            <div class="meme-card">
+                <img src="https://i.imgur.com/8Km9tLL.jpeg">
+                <h3>"Me after unlocking premium vibes"</h3>
+            </div>
+
+            <div class="meme-card">
+                <img src="https://i.imgur.com/X3K0F4D.jpeg">
+                <h3>"One more game..."</h3>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+     FORM AREA
+========================= -->
+
+<section class="platform">
+
+<div class="container">
+
+    <h2>Create Account</h2>
+
+    <form name="signupForm" onsubmit="return false">
+
+        <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="fullname" name="fullname">
+            <div class="message" id="msg-name"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" name="email">
+            <div class="message" id="msg-email"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" name="password">
+            <div class="message" id="msg-pwd"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="age" name="age">
+            <div class="message" id="msg-age"></div>
+        </div>
+
+        <button onclick="signupUser()">Sign Up</button>
+
+        <button type="button" class="alt-btn" onclick="loginUser()">
+            Login Existing User
+        </button>
+
+    </form>
+
+    <div id="success"></div>
+
+    <!-- PROFILE SETTINGS -->
+
+    <div class="profile-settings" id="profileSettings">
+
+        <h2>Profile Settings</h2>
+
+        <div class="profile-preview">
+            <img id="profileImage" src="https://i.imgur.com/2DhmtJ4.jpeg">
+        </div>
+
+        <div class="avatar-options">
+
+            <img src="https://i.imgur.com/2DhmtJ4.jpeg" onclick="changeAvatar(this.src)">
+
+            <img src="https://i.imgur.com/uIgDDDd.jpeg" onclick="changeAvatar(this.src)">
+
+            <img src="https://i.imgur.com/sbK4D5v.jpeg" onclick="changeAvatar(this.src)">
+
+            <img src="https://i.imgur.com/qN7J7A5.jpeg" onclick="changeAvatar(this.src)">
+
+        </div>
+
+        <div class="form-group" style="margin-top:20px;">
+            <label>Upload Your Own Photo</label>
+            <input type="file" id="uploadPhoto" accept="image/*">
+        </div>
+
+    </div>
+
+</div>
+
+</section>
+
+<!-- =========================
+     GAME SECTION
+========================= -->
+
+<section class="game-section" id="gameSection">
+
+    <h1>Vibe Chase 🎮</h1>
+
+    <div id="gameArea">
+
+        <div class="player" id="player"></div>
+
+    </div>
+
+    <div class="score-board">
+        Score: <span id="score">0</span>
+    </div>
+
+    <div class="instructions">
+        Use Arrow Keys ⬅️➡️⬆️⬇️ to move and collect coins!
+    </div>
+
+</section>
+
+<script>
+
+/* ====================================
+   USER STORAGE ARRAY
+==================================== */
+
+/*
+    This array stores all users.
+
+    Each user object contains:
+    - name
+    - email
+    - password
+    - age
+    - profile image
+*/
+
+let users = [];
+
+/* ====================================
+   VALIDATION FUNCTION
+==================================== */
+
+function check(inputId, msgId, condition, errorMsg, successMsg) {
+
+    let input = document.getElementById(inputId);
+    let msg = document.getElementById(msgId);
+
+    if(condition) {
+
+        input.classList.remove("invalid");
+        input.classList.add("valid");
+
+        msg.style.color = "lightgreen";
+        msg.innerHTML = successMsg;
+
+        return true;
+
+    }
+    else {
+
+        input.classList.remove("valid");
+        input.classList.add("invalid");
+
+        msg.style.color = "#ff8080";
+        msg.innerHTML = errorMsg;
+
+        return false;
+    }
+}
+
+/* ====================================
+   SIGNUP FUNCTION
+==================================== */
+
+function signupUser() {
+
+    let name = document.getElementById("fullname").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let pwd = document.getElementById("password").value;
+    let age = document.getElementById("age").value;
+
+    let v1 = check(
+        "fullname",
+        "msg-name",
+        name !== "",
+        "⚠️ Name required",
+        "✅ Nice username"
+    );
+
+    let v2 = check(
+        "email",
+        "msg-email",
+        email.includes("@") && email !== "",
+        "⚠️ Enter valid email",
+        "✅ Email verified"
+    );
+
+    let v3 = check(
+        "password",
+        "msg-pwd",
+        pwd.length >= 8,
+        "⚠️ Password must be 8+ chars",
+        "✅ Strong password"
+    );
+
+    let v4 = check(
+        "age",
+        "msg-age",
+        age >= 13,
+        "⚠️ Must be 13+",
+        "✅ Age approved"
+    );
+
+    if(v1 && v2 && v3 && v4) {
+
+        /*
+            Check if user already exists
+        */
+
+        let existingUser = users.find(user => user.email === email);
+
+        if(existingUser) {
+
+            showMessage("⚠️ User already exists. Please login.");
+            return;
+        }
+
+        /*
+            Create new user object
+        */
+
+        let newUser = {
+            name: name,
+            email: email,
+            password: pwd,
+            age: age,
+            profile: document.getElementById("profileImage").src
+        };
+
+        users.push(newUser);
+
+        console.log(users);
+
+        showMessage("🎉 Welcome to VibeVerse, " + name + "!");
+
+        document.getElementById("profileSettings").style.display = "block";
+
+        setTimeout(() => {
+            startGame();
+        }, 2500);
+    }
+}
+
+/* ====================================
+   LOGIN FUNCTION
+==================================== */
+
+function loginUser() {
+
+    let email = document.getElementById("email").value.trim();
+    let pwd = document.getElementById("password").value;
+
+    let user = users.find(
+        u => u.email === email && u.password === pwd
+    );
+
+    if(user) {
+
+        showMessage("🔥 Welcome back " + user.name + "!");
+
+        document.getElementById("profileSettings").style.display = "block";
+
+        document.getElementById("profileImage").src = user.profile;
+
+        setTimeout(() => {
+            startGame();
+        }, 2000);
+
+    }
+    else {
+
+        showMessage("❌ User not found. Please sign up.");
+    }
+}
+
+/* ====================================
+   SUCCESS MESSAGE FUNCTION
+==================================== */
+
+function showMessage(text) {
+
+    let el = document.getElementById("success");
+
+    el.style.display = "block";
+    el.innerHTML = text;
+}
+
+/* ====================================
+   PROFILE IMAGE FUNCTIONS
+==================================== */
+
+function changeAvatar(src) {
+
+    document.getElementById("profileImage").src = src;
+}
+
+/*
+    Upload custom image
+*/
+
+let uploadInput = document.getElementById("uploadPhoto");
+
+uploadInput.addEventListener("change", function(event) {
+
+    let file = event.target.files[0];
+
+    if(file) {
+
+        let reader = new FileReader();
+
+        reader.onload = function(e) {
+
+            document.getElementById("profileImage").src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+/* ====================================
+   GAME CODE
+==================================== */
+
+let gameStarted = false;
+let score = 0;
+
+function startGame() {
+
+    if(gameStarted) {
+        return;
+    }
+
+    gameStarted = true;
+
+    document.getElementById("gameSection").style.display = "block";
+
+    let gameArea = document.getElementById("gameArea");
+    let player = document.getElementById("player");
+
+    let x = 300;
+    let y = 200;
+
+    /*
+        Player movement
+    */
+
+    document.addEventListener("keydown", function(e) {
+
+        if(e.key === "ArrowLeft") {
+            x -= 15;
+        }
+
+        if(e.key === "ArrowRight") {
+            x += 15;
+        }
+
+        if(e.key === "ArrowUp") {
+            y -= 15;
+        }
+
+        if(e.key === "ArrowDown") {
+            y += 15;
+        }
+
+        /* Keep player inside game */
+
+        x = Math.max(0, Math.min(x, 640));
+        y = Math.max(0, Math.min(y, 390));
+
+        player.style.left = x + "px";
+        player.style.top = y + "px";
+
+        checkCoinCollision();
+    });
+
+    /*
+        Create coins repeatedly
+    */
+
+    setInterval(createCoin, 1200);
+
+    /*
+        Create enemies repeatedly
+    */
+
+    setInterval(createEnemy, 2500);
+}
+
+/* ====================================
+   CREATE COIN
+==================================== */
+
+function createCoin() {
+
+    let gameArea = document.getElementById("gameArea");
+
+    let coin = document.createElement("div");
+
+    coin.classList.add("coin");
+
+    coin.style.left = Math.random() * 650 + "px";
+    coin.style.top = Math.random() * 400 + "px";
+
+    gameArea.appendChild(coin);
+
+    setTimeout(() => {
+
+        if(coin.parentNode) {
+            coin.remove();
+        }
+
+    }, 5000);
+}
+
+/* ====================================
+   CREATE ENEMY
+==================================== */
+
+function createEnemy() {
+
+    let gameArea = document.getElementById("gameArea");
+
+    let enemy = document.createElement("div");
+
+    enemy.classList.add("enemy");
+
+    let ex = Math.random() * 650;
+    let ey = Math.random() * 400;
+
+    enemy.style.left = ex + "px";
+    enemy.style.top = ey + "px";
+
+    gameArea.appendChild(enemy);
+
+    let move = setInterval(() => {
+
+        ex += (Math.random() - 0.5) * 20;
+        ey += (Math.random() - 0.5) * 20;
+
+        enemy.style.left = ex + "px";
+        enemy.style.top = ey + "px";
+
+        checkEnemyCollision(enemy, move);
+
+    }, 300);
+
+    setTimeout(() => {
+
+        enemy.remove();
+        clearInterval(move);
+
+    }, 10000);
+}
+
+/* ====================================
+   CHECK COIN COLLISION
+==================================== */
+
+function checkCoinCollision() {
+
+    let player = document.getElementById("player");
+    let coins = document.querySelectorAll(".coin");
+
+    let playerRect = player.getBoundingClientRect();
+
+    coins.forEach(coin => {
+
+        let coinRect = coin.getBoundingClientRect();
+
+        if(
+            playerRect.left < coinRect.right &&
+            playerRect.right > coinRect.left &&
+            playerRect.top < coinRect.bottom &&
+            playerRect.bottom > coinRect.top
+        ) {
+
+            coin.remove();
+
+            score += 10;
+
+            document.getElementById("score").innerHTML = score;
+        }
+    });
+}
+
+/* ====================================
+   CHECK ENEMY COLLISION
+==================================== */
+
+function checkEnemyCollision(enemy, moveInterval) {
+
+    let player = document.getElementById("player");
+
+    let playerRect = player.getBoundingClientRect();
+    let enemyRect = enemy.getBoundingClientRect();
+
+    if(
+        playerRect.left < enemyRect.right &&
+        playerRect.right > enemyRect.left &&
+        playerRect.top < enemyRect.bottom &&
+        playerRect.bottom > enemyRect.top
+    ) {
+
+        clearInterval(moveInterval);
+
+        alert("💀 Game Over! Final Score: " + score);
+
+        location.reload();
+    }
+}
+
+</script>
+
+</body>
+</html>
+```
+
+# Beginner Tutorial Notes
+
+## What Was Added?
+
+### 1. Professional Cover Page
+
+* Hero section
+* Glassmorphism effects
+* Meme cards
+* Neon gradients
+* Animated glowing backgrounds
+
+### 2. Real Signup + Login System
+
+* Array stores users
+* Existing user verification
+* Login validation
+* Signup validation
+
+### 3. Profile Settings
+
+* Avatar selection
+* Upload your own photo
+* Live profile preview
+
+### 4. Arcade Style Game
+
+* PAC-MAN inspired gameplay
+* Coins to collect
+* Moving enemies
+* Score system
+* Keyboard controls
+
+## JavaScript Concepts Used
+
+### Arrays
+
+```javascript
+let users = [];
+```
+
+Stores all users.
+
+### Objects
+
+```javascript
+{
+   name: "Amit",
+   email: "test@gmail.com"
+}
+```
+
+### find()
+
+```javascript
+users.find(user => user.email === email)
+```
+
+Searches the array.
+
+### Event Listeners
+
+```javascript
+addEventListener()
+```
+
+Used for keyboard and image upload.
+
+### DOM Manipulation
+
+```javascript
+document.getElementById()
+```
+
+Used throughout the project.

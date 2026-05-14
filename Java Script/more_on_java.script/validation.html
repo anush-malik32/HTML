@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Makes the page responsive on phones/tablets -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Form Validation Tutorial</title>
+
+    <style>
+
+        /* =========================
+           BASIC PAGE STYLING
+        ========================== */
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Main form container */
+        .container {
+            width: 350px;
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Each form section */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        /* Input box styling */
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+
+            /*
+                IMPORTANT FIX:
+                Without box-sizing, width:100% + padding
+                can overflow outside the container.
+            */
+            box-sizing: border-box;
+        }
+
+        /* Message styling */
+        .message {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Success message */
+        #success {
+            display: none;
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #d1fae5;
+            border: 1px solid #10b981;
+            border-radius: 6px;
+            color: #065f46;
+        }
+
+        /* Submit button */
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Valid input style */
+        .valid {
+            border-color: green;
+        }
+
+        /* Invalid input style */
+        .invalid {
+            border-color: red;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h2>Signup Form Validation</h2>
+
+        <!--
+            IMPORTANT FIX:
+            Added the form because your JavaScript
+            was trying to access:
+            document.forms["signupForm"]
+
+            But there was NO form in the HTML.
+        -->
+
+        <form name="signupForm" onsubmit="return validateForm()">
+
+            <!-- FULL NAME -->
+            <div class="form-group">
+
+                <label for="fullname">Full Name</label>
+
+                <input
+                    type="text"
+                    id="fullname"
+                    name="fullname"
+                    placeholder="Enter your full name"
+                >
+
+                <div id="msg-name" class="message"></div>
+
+            </div>
+
+            <!-- EMAIL -->
+            <div class="form-group">
+
+                <label for="email">Email</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                >
+
+                <div id="msg-email" class="message"></div>
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="form-group">
+
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Minimum 8 characters"
+                >
+
+                <div id="msg-pwd" class="message"></div>
+
+            </div>
+
+            <!-- AGE -->
+            <div class="form-group">
+
+                <label for="age">Age</label>
+
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    placeholder="Enter your age"
+                >
+
+                <div id="msg-age" class="message"></div>
+
+            </div>
+
+            <button type="submit">Create Account</button>
+
+        </form>
+
+        <!-- Success box -->
+        <div id="success"></div>
+
+    </div>
+
+    <script>
+
+        /*
+            ==========================================
+            HELPER FUNCTION
+            ==========================================
+
+            This function:
+            1. Checks if validation passed
+            2. Shows message
+            3. Changes input border color
+            4. Returns true or false
+        */
+
+        function check(inputId, msgId, condition, errorMsg, successMsg) {
+
+            var input = document.getElementById(inputId);
+            var msg = document.getElementById(msgId);
+
+            if (condition) {
+
+                input.classList.remove("invalid");
+                input.classList.add("valid");
+
+                msg.style.color = "green";
+                msg.innerHTML = successMsg;
+
+                return true;
+
+            } else {
+
+                input.classList.remove("valid");
+                input.classList.add("invalid");
+
+                msg.style.color = "red";
+                msg.innerHTML = errorMsg;
+
+                return false;
+            }
+        }
+
+        /*
+            ==========================================
+            MAIN VALIDATION FUNCTION
+            ==========================================
+        */
+
+        function validateForm() {
+
+            /*
+                IMPORTANT FIX:
+                Your original code was correct logically,
+                but it was split strangely into 2 lines.
+
+                Cleaner beginner version below.
+            */
+
+            var name = document.forms["signupForm"]["fullname"].value.trim();
+
+            var email = document.forms["signupForm"]["email"].value.trim();
+
+            var pwd = document.forms["signupForm"]["password"].value;
+
+            var age = document.forms["signupForm"]["age"].value;
+
+            /*
+                VALIDATION RULES
+            */
+
+            var v1 = check(
+                "fullname",
+                "msg-name",
+                name !== "",
+                "⚠️ Full name is required.",
+                "✅ Looks good!"
+            );
+
+            var v2 = check(
+                "email",
+                "msg-email",
+                email !== "" && email.includes("@"),
+
+                /*
+                    IMPORTANT FIX:
+                    Using == works,
+                    but === is better practice in JavaScript.
+                */
+
+                email === ""
+                    ? "⚠️ Email is required."
+                    : "⚠️ Must include @.",
+
+                "✅ Valid email address."
+            );
+
+            var v3 = check(
+                "password",
+                "msg-pwd",
+                pwd.length >= 8,
+
+                pwd === ""
+                    ? "⚠️ Password is required."
+                    : "⚠️ Minimum 8 characters.",
+
+                "✅ Strong password!"
+            );
+
+            var v4 = check(
+                "age",
+                "msg-age",
+                age !== "" && Number(age) >= 13,
+
+                age === ""
+                    ? "⚠️ Age is required."
+                    : "⚠️ Must be 13 or older.",
+
+                "✅ Age verified."
+            );
+
+            /*
+                IF ALL VALIDATIONS PASS
+            */
+
+            if (v1 && v2 && v3 && v4) {
+
+                var el = document.getElementById("success");
+
+                el.style.display = "block";
+
+                el.innerHTML =
+                    "🎉 <strong>Account created!</strong><br>" +
+                    "Welcome, <strong>" +
+                    name +
+                    "</strong>.";
+            }
+
+            /*
+                IMPORTANT:
+                return false prevents page refresh
+                after form submission.
+            */
+
+            return false;
+        }
+
+    </script>
+
+</body>
+</html>
