@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun JSON Cart Game</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(
+                135deg,
+                #ff9a9e,
+                #fad0c4,
+                #fbc2eb,
+                #a18cd1,
+                #84fab0,
+                #8fd3f4
+            );
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 55px;
+            text-shadow: 4px 4px 8px black;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: rgba(255,255,255,0.95);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+        }
+
+        .input-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            padding: 15px;
+            border-radius: 15px;
+            border: 3px solid hotpink;
+            font-size: 18px;
+            width: 220px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: royalblue;
+            transform: scale(1.03);
+        }
+
+        .button-area {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        button {
+            padding: 15px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.08);
+        }
+
+        .add-btn {
+            background-color: orange;
+            color: white;
+        }
+
+        .save-btn {
+            background-color: limegreen;
+            color: white;
+        }
+
+        .load-btn {
+            background-color: royalblue;
+            color: white;
+        }
+
+        .clear-btn {
+            background-color: crimson;
+            color: white;
+        }
+
+        .box {
+            background: #fff8dc;
+            border: 4px dashed orange;
+            border-radius: 20px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        h2 {
+            text-align: center;
+            color: darkblue;
+        }
+
+        .item-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            margin: 12px 0;
+            border-radius: 15px;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .price {
+            color: green;
+            font-weight: bold;
+        }
+
+        .json-box {
+            background: black;
+            color: lime;
+            padding: 20px;
+            border-radius: 15px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            min-height: 80px;
+        }
+
+        .total {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: purple;
+            margin-top: 20px;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 26px;
+            color: deeppink;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+
+
+        /* FLOATING EMOJIS */
+
+        .emoji-rain {
+            position: fixed;
+            top: -100px;
+            font-size: 70px;
+            cursor: pointer;
+            user-select: none;
+            z-index: 9999;
+            animation: fall linear forwards;
+            transition: transform 0.2s;
+        }
+
+        .emoji-rain:hover {
+            transform: scale(1.2);
+        }
+
+        @keyframes fall {
+
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(120vh);
+            }
+        }
+
+
+
+        /* POP ANIMATION */
+
+        .pop {
+            animation: popAnim 0.4s forwards;
+        }
+
+        @keyframes popAnim {
+
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.8);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(0);
+                opacity: 0;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>🛒 Fun JSON Cart Game 🎉</h1>
+
+    <div class="container">
+
+        <div class="input-section">
+
+            <input type="text"
+                   id="emoji"
+                   placeholder="Emoji 🍕">
+
+            <input type="text"
+                   id="name"
+                   placeholder="Item Name">
+
+            <input type="number"
+                   id="price"
+                   placeholder="Price">
+
+        </div>
+
+
+
+        <div class="button-area">
+
+            <button class="add-btn"
+                    onclick="addItem()">
+
+                ➕ Add Item
+
+            </button>
+
+            <button class="save-btn"
+                    onclick="saveCart()">
+
+                💾 Save Cart
+
+            </button>
+
+            <button class="load-btn"
+                    onclick="loadCart()">
+
+                📂 Load Cart
+
+            </button>
+
+            <button class="clear-btn"
+                    onclick="clearCart()">
+
+                🗑 Clear
+
+            </button>
+
+        </div>
+
+
+
+        <!-- CURRENT CART -->
+
+        <div class="box">
+
+            <h2>🛍 Current Cart</h2>
+
+            <div id="cart-items"></div>
+
+        </div>
+
+
+
+        <!-- JSON DISPLAY -->
+
+        <div class="box">
+
+            <h2>📜 JSON Data</h2>
+
+            <div id="json-output"
+                 class="json-box">
+
+                Your JSON will appear here...
+
+            </div>
+
+        </div>
+
+
+
+        <!-- LOADED CART -->
+
+        <div class="box">
+
+            <h2>🎁 Loaded Cart</h2>
+
+            <div id="loaded-items"></div>
+
+            <div class="total"
+                 id="total-price"></div>
+
+            <div class="message"
+                 id="message"></div>
+
+        </div>
+
+    </div>
+
+
+
+
+
+    <script>
+
+        // MAIN JSON OBJECT
+
+        let cart = {
+            items: []
+        };
+
+
+
+        // DISPLAY CURRENT CART
+
+        function displayCart() {
+
+            let output = "";
+
+            cart.items.forEach(function(item) {
+
+                output += `
+                    <div class="item-card">
+
+                        <span>
+                            ${item.emoji} ${item.name}
+                        </span>
+
+                        <span class="price">
+                            $${item.price}
+                        </span>
+
+                    </div>
+                `;
+            });
+
+            document.getElementById("cart-items").innerHTML =
+                output;
+
+            console.log("Current Cart:");
+            console.log(cart);
+        }
+
+
+
+
+
+        // ADD ITEM
+
+        function addItem() {
+
+            let emoji =
+                document.getElementById("emoji").value;
+
+            let name =
+                document.getElementById("name").value;
+
+            let price =
+                Number(document.getElementById("price").value);
+
+
+
+            // VALIDATION
+
+            if (
+                emoji === "" ||
+                name === "" ||
+                price <= 0
+            ) {
+
+                alert("Please fill all fields!");
+
+                return;
+            }
+
+
+
+            // CREATE OBJECT
+
+            let item = {
+
+                emoji: emoji,
+
+                name: name,
+
+                price: price
+
+            };
+
+
+
+            console.log("Adding Item:");
+            console.log(item);
+
+
+
+            // PUSH INTO JSON OBJECT
+
+            cart.items.push(item);
+
+
+
+            // UPDATE DISPLAY
+
+            displayCart();
+
+
+
+            // FUN EFFECT
+
+            createEmojiRain(emoji);
+
+
+
+            // CLEAR INPUTS
+
+            document.getElementById("emoji").value = "";
+
+            document.getElementById("name").value = "";
+
+            document.getElementById("price").value = "";
+
+
+
+            document.getElementById("message").textContent =
+                "🎉 Awesome! Item Added!";
+        }
+
+
+
+
+
+        // SAVE CART
+
+        function saveCart() {
+
+            console.log("Saving Cart...");
+
+
+
+            // CONVERT OBJECT -> JSON
+
+            let jsonText =
+                JSON.stringify(cart, null, 2);
+
+
+
+            console.log("JSON Created:");
+            console.log(jsonText);
+
+
+
+            // SHOW JSON
+
+            document.getElementById("json-output").textContent =
+                jsonText;
+
+
+
+            document.getElementById("message").textContent =
+                "💾 Cart Saved as JSON!";
+        }
+
+
+
+
+
+        // LOAD CART
+
+        function loadCart() {
+
+            console.log("Loading Cart...");
+
+
+
+            let jsonText =
+                document.getElementById("json-output").textContent;
+
+
+
+            // JSON -> OBJECT
+
+            let loadedCart =
+                JSON.parse(jsonText);
+
+
+
+            console.log("Loaded Object:");
+            console.log(loadedCart);
+
+
+
+            let rows = "";
+
+            let total = 0;
+
+
+
+            loadedCart.items.forEach(function(item) {
+
+                total += item.price;
+
+
+
+                rows += `
+                    <div class="item-card">
+
+                        <span>
+                            ${item.emoji} ${item.name}
+                        </span>
+
+                        <span class="price">
+                            $${item.price}
+                        </span>
+
+                    </div>
+                `;
+            });
+
+
+
+            document.getElementById("loaded-items").innerHTML =
+                rows;
+
+
+
+            document.getElementById("total-price").textContent =
+                "💰 Total: $" + total;
+
+
+
+            document.getElementById("message").textContent =
+                "📂 Cart Loaded Successfully!";
+        }
+
+
+
+
+
+        // CLEAR EVERYTHING
+
+        function clearCart() {
+
+            cart.items = [];
+
+
+
+            document.getElementById("cart-items").innerHTML = "";
+
+            document.getElementById("loaded-items").innerHTML = "";
+
+
+
+            document.getElementById("json-output").textContent =
+                "Your JSON will appear here...";
+
+
+
+            document.getElementById("total-price").textContent =
+                "";
+
+
+
+            document.getElementById("message").textContent =
+                "🗑 Cart Cleared!";
+
+
+
+            console.log("Cart Cleared");
+        }
+
+
+
+
+
+        // FLOATING EMOJIS
+
+        function createEmojiRain(emoji) {
+
+            for (let i = 0; i < 15; i++) {
+
+                let rain =
+                    document.createElement("div");
+
+
+
+                rain.classList.add("emoji-rain");
+
+
+
+                rain.innerText = emoji;
+
+
+
+                rain.style.left =
+                    Math.random() * window.innerWidth + "px";
+
+
+
+                rain.style.animationDuration =
+                    (Math.random() * 4 + 4) + "s";
+
+
+
+                document.body.appendChild(rain);
+
+
+
+
+
+                // POP WHEN CLICKED
+
+                rain.addEventListener("click", function() {
+
+                    console.log("POP!");
+
+
+
+                    rain.classList.add("pop");
+
+
+
+                    // SOUND EFFECT
+
+                    let popSound = new Audio(
+                        "https://www.soundjay.com/buttons/sounds/button-16.mp3"
+                    );
+
+                    popSound.play();
+
+
+
+                    setTimeout(function() {
+
+                        rain.remove();
+
+                    }, 400);
+
+                });
+
+
+
+
+
+                // AUTO REMOVE
+
+                setTimeout(function() {
+
+                    if (rain.parentNode) {
+
+                        rain.remove();
+
+                    }
+
+                }, 9000);
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>

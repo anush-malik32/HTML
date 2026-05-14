@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function saveCart() {
+            let jsonText = JSON.stringify(cart, null, 2);
+            document.getElementById("output-title").textContent = "cartSaved";
+            document.getElementById("output-content").innerHTML =
+                `<div class="json-block">${jsonText}</div>
+                <p class="success"> Saved! Now click Load Cart.</p>`;
+            document.getElementById("output-box").style.display = "block";
+            document.getElementById("load-btn").disabled = false;
+        }
+
+        function loadCart() {
+            let jsonText = JSON.stringify(cart);
+            let loadedCart = JSON.parse(jsonText);
+            let total = 0;
+            let rows = "";
+            loadedCart.items.forEach(function(item) {
+                total += item.price;
+                rows += `<div class="item-row">
+                            <span>${item.emoji} ${item.name}</span>
+                            <span class="item-price">$${item.price}</span>
+                        </div>`;
+            })
+        };
+    </script>
+</body>
+</html>>
