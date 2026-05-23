@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Palindrome Battle Arena</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    color:white;
+
+    background:
+    radial-gradient(circle at top left,#ff00ea,#120022 30%),
+    radial-gradient(circle at bottom right,#00f7ff,#001233 30%),
+    linear-gradient(135deg,#020024,#090979,#000);
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#ff00ea55;
+    border-radius:50%;
+    filter:blur(120px);
+    top:-200px;
+    left:-100px;
+    z-index:-1;
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    width:500px;
+    height:500px;
+    background:#00f7ff55;
+    border-radius:50%;
+    filter:blur(120px);
+    bottom:-200px;
+    right:-100px;
+    z-index:-1;
+}
+
+.container{
+    width:95%;
+    max-width:1400px;
+    margin:auto;
+    padding:30px;
+}
+
+h1{
+    text-align:center;
+    font-size:4.5rem;
+    font-weight:900;
+
+    background:
+    linear-gradient(90deg,#00f7ff,#ff00ea,#ffe600);
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    opacity:0.9;
+    margin-bottom:40px;
+    font-size:1.1rem;
+}
+
+.layout{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:30px;
+}
+
+.card{
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.12);
+    backdrop-filter:blur(15px);
+    border-radius:30px;
+    padding:30px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.4);
+}
+
+.section-title{
+    font-size:2rem;
+    margin-bottom:20px;
+    color:#ffe600;
+}
+
+input{
+    width:100%;
+    padding:18px;
+    border:none;
+    border-radius:20px;
+    background:rgba(255,255,255,0.12);
+    color:white;
+    font-size:1.1rem;
+    outline:none;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+button{
+    border:none;
+    padding:15px 28px;
+    border-radius:50px;
+    cursor:pointer;
+    font-size:1rem;
+    font-weight:700;
+    color:white;
+    transition:0.3s;
+}
+
+.play-btn{
+    background:linear-gradient(90deg,#00f7ff,#005eff);
+}
+
+.random-btn{
+    background:linear-gradient(90deg,#ff00ea,#ff0055);
+}
+
+button:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 25px rgba(255,255,255,0.3);
+}
+
+.arena{
+    position:relative;
+    min-height:320px;
+    margin-top:40px;
+    border-radius:25px;
+    background:rgba(0,0,0,0.25);
+    overflow:hidden;
+}
+
+.letter{
+    position:absolute;
+
+    width:70px;
+    height:70px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:20px;
+
+    font-size:2rem;
+    font-weight:900;
+
+    background:
+    linear-gradient(180deg,#00f7ff,#005eff);
+
+    transition:1s cubic-bezier(.68,-0.55,.27,1.55);
+
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
+}
+
+.left-check{
+    background:
+    linear-gradient(180deg,#ffe600,#ff9100);
+
+    transform:scale(1.15);
+}
+
+.right-check{
+    background:
+    linear-gradient(180deg,#ff00ea,#ff0055);
+
+    transform:scale(1.15);
+}
+
+.match{
+    background:
+    linear-gradient(180deg,#00ff87,#00b894);
+
+    transform:scale(1.2) rotate(10deg);
+}
+
+.fail{
+    background:
+    linear-gradient(180deg,#ff4d4d,#b00020);
+
+    transform:scale(1.2) rotate(-10deg);
+}
+
+.middle{
+    background:
+    linear-gradient(180deg,#ffffff,#bbbbbb);
+
+    color:black;
+}
+
+.scoreboard{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+    margin-top:30px;
+}
+
+.score-box{
+    background:rgba(255,255,255,0.08);
+    padding:18px;
+    border-radius:20px;
+    text-align:center;
+}
+
+.score-box h2{
+    font-size:2rem;
+    color:#ffe600;
+}
+
+.result{
+    margin-top:25px;
+    text-align:center;
+    font-size:1.7rem;
+    min-height:60px;
+    font-weight:700;
+}
+
+.code-box{
+    background:#060814;
+    border-radius:25px;
+    overflow:hidden;
+    margin-top:20px;
+}
+
+.code-line{
+    padding:16px 20px;
+    font-family:monospace;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    transition:0.4s;
+}
+
+.highlight{
+    background:
+    linear-gradient(90deg,#ffe600,#ff9100);
+
+    color:black;
+    font-weight:bold;
+}
+
+.info{
+    margin-top:25px;
+    background:rgba(0,0,0,0.35);
+    padding:20px;
+    border-radius:20px;
+    min-height:120px;
+    line-height:1.8;
+}
+
+.floating{
+    position:fixed;
+    font-size:2.5rem;
+    animation:floatUp linear forwards;
+    pointer-events:none;
+}
+
+@keyframes floatUp{
+
+    from{
+        transform:translateY(0) rotate(0deg);
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-600px) rotate(360deg);
+        opacity:0;
+    }
+}
+
+@media(max-width:1000px){
+
+    .layout{
+        grid-template-columns:1fr;
+    }
+
+    h1{
+        font-size:3rem;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Palindrome Battle Arena</h1>
+
+<p class="subtitle">
+Letters battle from both sides to prove the word is a palindrome ⚔️
+</p>
+
+<div class="layout">
+
+<div class="card">
+
+    <div class="section-title">
+        🎮 Arena
+    </div>
+
+    <input
+    type="text"
+    id="textInput"
+    placeholder="Enter a word..."
+    >
+
+    <div class="buttons">
+
+        <button
+        class="play-btn"
+        onclick="palindrome(document.getElementById('textInput').value)"
+        >
+        ⚔️ Start Battle
+        </button>
+
+        <button
+        class="random-btn"
+        onclick="randomWord()"
+        >
+        🎲 Random Word
+        </button>
+
+    </div>
+
+    <div class="arena" id="arena"></div>
+
+    <div class="result" id="result"></div>
+
+    <div class="scoreboard">
+
+        <div class="score-box">
+            <p>Wins</p>
+            <h2 id="wins">0</h2>
+        </div>
+
+        <div class="score-box">
+            <p>Losses</p>
+            <h2 id="losses">0</h2>
+        </div>
+
+        <div class="score-box">
+            <p>Streak</p>
+            <h2 id="streak">0</h2>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card">
+
+    <div class="section-title">
+        💻 Live Code Execution
+    </div>
+
+    <div class="code-box">
+
+<div class="code-line" id="line1">
+1. function palindrome(myString) {
+</div>
+
+<div class="code-line" id="line2">
+2. var input = myString.replace(/[^A-Z0-9]/ig, '').toLowerCase();
+</div>
+
+<div class="code-line" id="line3">
+3. var reversedInput = input.split('').reverse().join('');
+</div>
+
+<div class="code-line" id="line4">
+4. if (input === reversedInput) {
+</div>
+
+<div class="code-line" id="line5">
+5. return true;
+</div>
+
+<div class="code-line" id="line6">
+6. } else {
+</div>
+
+<div class="code-line" id="line7">
+7. return false;
+</div>
+
+<div class="code-line" id="line8">
+8. }
+</div>
+
+    </div>
+
+    <div class="info" id="info">
+        Enter a word and begin the palindrome battle.
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let wins = 0;
+let losses = 0;
+let streak = 0;
+
+const words = [
+"madam",
+"racecar",
+"banana",
+"robot",
+"rotor",
+"level",
+"civic",
+"apple",
+"wow",
+"refer"
+];
+
+function sleep(ms){
+    return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+function highlight(line){
+
+    document
+    .querySelectorAll(".code-line")
+    .forEach(el=>el.classList.remove("highlight"));
+
+    document
+    .getElementById("line"+line)
+    .classList.add("highlight");
+}
+
+function emoji(symbol){
+
+    let e = document.createElement("div");
+
+    e.className = "floating";
+
+    e.innerHTML = symbol;
+
+    e.style.left =
+    Math.random()*window.innerWidth + "px";
+
+    e.style.bottom = "0px";
+
+    e.style.animationDuration =
+    (2 + Math.random()*2) + "s";
+
+    document.body.appendChild(e);
+
+    setTimeout(()=>{
+        e.remove();
+    },4000);
+}
+
+function createArena(word){
+
+    const arena =
+    document.getElementById("arena");
+
+    arena.innerHTML = "";
+
+    const spacing = 85;
+
+    const startX = 40;
+
+    word.split("").forEach((letter,index)=>{
+
+        let div = document.createElement("div");
+
+        div.className = "letter";
+
+        div.innerHTML = letter;
+
+        div.style.left =
+        (startX + index*spacing) + "px";
+
+        div.style.top = "110px";
+
+        arena.appendChild(div);
+    });
+}
+
+async function palindrome(myString){
+
+    if(myString.trim()===""){
+        return;
+    }
+
+    createArena(myString);
+
+    highlight(1);
+
+    document.getElementById("info").innerHTML =
+    "✨ Starting palindrome battle...";
+
+    await sleep(1200);
+
+    highlight(2);
+
+    var input =
+    myString
+    .replace(/[^A-Z0-9]/ig,"")
+    .toLowerCase();
+
+    document.getElementById("info").innerHTML =
+    "🧹 Cleaned word becomes: <b>" +
+    input +
+    "</b>";
+
+    await sleep(1500);
+
+    highlight(3);
+
+    var reversedInput =
+    input
+    .split('')
+    .reverse()
+    .join('');
+
+    document.getElementById("info").innerHTML =
+    "🔄 Reverse created: <b>" +
+    reversedInput +
+    "</b>";
+
+    await sleep(1500);
+
+    const letters =
+    document.querySelectorAll(".letter");
+
+    let left = 0;
+    let right = input.length - 1;
+
+    let palindromeResult = true;
+
+    while(left <= right){
+
+        letters[left].classList.add("left-check");
+        letters[right].classList.add("right-check");
+
+        letters[left].style.top = "40px";
+        letters[right].style.top = "180px";
+
+        document.getElementById("info").innerHTML =
+        `⚔️ Comparing <b>${input[left]}</b> vs <b>${input[right]}</b>`;
+
+        await sleep(1500);
+
+        if(input[left] === input[right]){
+
+            letters[left].classList.remove("left-check");
+            letters[right].classList.remove("right-check");
+
+            letters[left].classList.add("match");
+            letters[right].classList.add("match");
+
+            emoji("⚡");
+            emoji("🔥");
+
+        } else {
+
+            palindromeResult = false;
+
+            letters[left].classList.remove("left-check");
+            letters[right].classList.remove("right-check");
+
+            letters[left].classList.add("fail");
+            letters[right].classList.add("fail");
+
+            emoji("💀");
+            emoji("❌");
+
+            break;
+        }
+
+        left++;
+        right--;
+
+        await sleep(1400);
+    }
+
+    highlight(4);
+
+    await sleep(1000);
+
+    if(palindromeResult){
+
+        highlight(5);
+
+        wins++;
+        streak++;
+
+        document.getElementById("wins").innerHTML =
+        wins;
+
+        document.getElementById("streak").innerHTML =
+        streak;
+
+        document.getElementById("result").innerHTML =
+        "🏆 PALINDROME VICTORY!";
+
+        for(let i=0;i<10;i++){
+            emoji("🎉");
+            emoji("✨");
+            emoji("🔥");
+        }
+
+    } else {
+
+        highlight(7);
+
+        losses++;
+        streak = 0;
+
+        document.getElementById("losses").innerHTML =
+        losses;
+
+        document.getElementById("streak").innerHTML =
+        streak;
+
+        document.getElementById("result").innerHTML =
+        "💀 NOT A PALINDROME!";
+    }
+}
+
+function randomWord(){
+
+    let word =
+    words[Math.floor(Math.random()*words.length)];
+
+    document.getElementById("textInput").value =
+    word;
+}
+
+</script>
+
+</body>
+</html>
