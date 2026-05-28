@@ -10,3 +10,12 @@ function shuffle(array) {
         [array[i],array[j]] = [array[j],array[i]];
     }
 }
+function flipcard() {
+    if (flippedcards.length<2 && this.classList.contains("hidden")) {
+        this.classList.remove("hidden");
+        flippedcards.push(this);
+    }       
+    if (flippedcards.length==2) {
+        checkMatch();
+    }
+}
