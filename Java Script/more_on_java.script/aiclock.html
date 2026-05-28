@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Clock Galaxy</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, sans-serif;
+    background:
+    radial-gradient(circle at top,#1e3a8a,#020617);
+    color:white;
+    overflow-x:hidden;
+}
+
+/* HEADER */
+
+header{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
+    padding:40px;
+}
+
+header h1{
+    font-size:80px;
+    text-shadow:0 0 20px cyan;
+    margin-bottom:20px;
+}
+
+header p{
+    font-size:24px;
+    color:#cbd5e1;
+}
+
+.scroll{
+    margin-top:40px;
+    font-size:30px;
+    animation:bounce 1s infinite;
+}
+
+@keyframes bounce{
+
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(10px);
+    }
+}
+
+/* MAIN CLOCK */
+
+.main-clock-section{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:100px;
+    flex-wrap:wrap;
+    padding:50px;
+}
+
+.clock{
+    width:350px;
+    height:350px;
+    border:12px solid white;
+    border-radius:50%;
+    position:relative;
+    background:
+    radial-gradient(circle,#0f172a,#020617);
+    box-shadow:0 0 30px rgba(255,255,255,0.3);
+}
+
+/* CLOCK NUMBERS */
+
+.number{
+    position:absolute;
+    width:100%;
+    height:100%;
+    text-align:center;
+    font-size:28px;
+    font-weight:bold;
+}
+
+.number span{
+    display:inline-block;
+    transform:translateY(12px);
+}
+
+.number1{transform:rotate(30deg);}
+.number1 span{transform:rotate(-30deg);}
+
+.number2{transform:rotate(60deg);}
+.number2 span{transform:rotate(-60deg);}
+
+.number3{transform:rotate(90deg);}
+.number3 span{transform:rotate(-90deg);}
+
+.number4{transform:rotate(120deg);}
+.number4 span{transform:rotate(-120deg);}
+
+.number5{transform:rotate(150deg);}
+.number5 span{transform:rotate(-150deg);}
+
+.number6{transform:rotate(180deg);}
+.number6 span{transform:rotate(-180deg);}
+
+.number7{transform:rotate(210deg);}
+.number7 span{transform:rotate(-210deg);}
+
+.number8{transform:rotate(240deg);}
+.number8 span{transform:rotate(-240deg);}
+
+.number9{transform:rotate(270deg);}
+.number9 span{transform:rotate(-270deg);}
+
+.number10{transform:rotate(300deg);}
+.number10 span{transform:rotate(-300deg);}
+
+.number11{transform:rotate(330deg);}
+.number11 span{transform:rotate(-330deg);}
+
+/* HANDS */
+
+.hand{
+    position:absolute;
+    bottom:50%;
+    left:50%;
+    transform-origin:bottom;
+    transform:translateX(-50%);
+    border-radius:20px;
+}
+
+.hour{
+    width:8px;
+    height:90px;
+    background:white;
+}
+
+.minute{
+    width:5px;
+    height:120px;
+    background:#38bdf8;
+}
+
+.second{
+    width:3px;
+    height:140px;
+    background:red;
+}
+
+.center-dot{
+    width:18px;
+    height:18px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+/* DIGITAL CLOCK */
+
+.digital-container{
+    text-align:center;
+}
+
+#digitalClock{
+    font-size:60px;
+    background:rgba(255,255,255,0.08);
+    padding:25px 40px;
+    border-radius:20px;
+    box-shadow:0 0 20px rgba(255,255,255,0.2);
+    margin-bottom:30px;
+}
+
+/* ALARM */
+
+.alarm-box{
+    background:rgba(255,255,255,0.08);
+    padding:25px;
+    border-radius:20px;
+}
+
+input{
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    font-size:18px;
+    margin-top:15px;
+}
+
+button{
+    padding:14px 24px;
+    border:none;
+    border-radius:12px;
+    background:#38bdf8;
+    color:white;
+    cursor:pointer;
+    font-size:18px;
+    margin-top:20px;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.08);
+    background:#0ea5e9;
+}
+
+#alarmMessage{
+    margin-top:20px;
+    color:yellow;
+    font-size:22px;
+}
+
+/* SECTION TITLES */
+
+.section-title{
+    text-align:center;
+    font-size:55px;
+    margin:100px 0 50px;
+    text-shadow:0 0 20px cyan;
+}
+
+/* WORLD CLOCKS */
+
+.world-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(300px,1fr));
+
+    gap:40px;
+    padding:40px;
+}
+
+.world-card{
+    background:rgba(255,255,255,0.08);
+    padding:30px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 0 20px rgba(255,255,255,0.15);
+    transition:0.4s;
+}
+
+.world-card:hover{
+    transform:translateY(-10px);
+}
+
+.city{
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.time{
+    font-size:40px;
+    color:#38bdf8;
+}
+
+.date{
+    margin-top:10px;
+    color:#cbd5e1;
+}
+
+/* MINI CLOCK */
+
+.mini-clock{
+    width:170px;
+    height:170px;
+    border:8px solid white;
+    border-radius:50%;
+    margin:25px auto 0;
+    position:relative;
+    background:
+    radial-gradient(circle,#1e293b,#020617);
+}
+
+.mini-hour,
+.mini-minute,
+.mini-second{
+    position:absolute;
+    bottom:50%;
+    left:50%;
+    transform-origin:bottom;
+    transform:translateX(-50%);
+}
+
+.mini-hour{
+    width:5px;
+    height:40px;
+    background:white;
+}
+
+.mini-minute{
+    width:4px;
+    height:60px;
+    background:#38bdf8;
+}
+
+.mini-second{
+    width:2px;
+    height:70px;
+    background:red;
+}
+
+.mini-center{
+    width:14px;
+    height:14px;
+    background:white;
+    border-radius:50%;
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+/* GAME */
+
+.game-section{
+    padding:60px 20px 120px;
+}
+
+.game-box{
+    max-width:700px;
+    margin:auto;
+    background:rgba(255,255,255,0.08);
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+}
+
+#question{
+    font-size:35px;
+    margin-bottom:20px;
+}
+
+#result{
+    margin-top:25px;
+    font-size:28px;
+    color:#38bdf8;
+}
+
+.score{
+    margin-top:20px;
+    font-size:28px;
+}
+
+#timer{
+    margin-top:20px;
+    font-size:35px;
+    color:yellow;
+}
+
+/* EXPLOSION */
+
+.explosion{
+    position:fixed;
+    width:20px;
+    height:20px;
+    border-radius:50%;
+    pointer-events:none;
+    animation:explode 1s linear forwards;
+}
+
+@keyframes explode{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    100%{
+        transform:scale(20);
+        opacity:0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <h1>⏰ CLOCK GALAXY ⏰</h1>
+
+    <p>
+        Real-Time World Clocks • Alarm System • Interactive Game
+    </p>
+
+    <div class="scroll">
+        ⬇ Scroll Down ⬇
+    </div>
+
+</header>
+
+<!-- MAIN CLOCK -->
+
+<section class="main-clock-section">
+
+    <div class="clock">
+
+        <div class="number number1"><span>1</span></div>
+        <div class="number number2"><span>2</span></div>
+        <div class="number number3"><span>3</span></div>
+        <div class="number number4"><span>4</span></div>
+        <div class="number number5"><span>5</span></div>
+        <div class="number number6"><span>6</span></div>
+        <div class="number number7"><span>7</span></div>
+        <div class="number number8"><span>8</span></div>
+        <div class="number number9"><span>9</span></div>
+        <div class="number number10"><span>10</span></div>
+        <div class="number number11"><span>11</span></div>
+
+        <div class="hand hour" id="hour"></div>
+        <div class="hand minute" id="minute"></div>
+        <div class="hand second" id="second"></div>
+
+        <div class="center-dot"></div>
+
+    </div>
+
+    <div class="digital-container">
+
+        <div id="digitalClock"></div>
+
+        <div class="alarm-box">
+
+            <h2>🚨 Alarm Clock 🚨</h2>
+
+            <input type="time" id="alarmInput">
+
+            <br>
+
+            <button onclick="setAlarm()">
+                Set Alarm
+            </button>
+
+            <div id="alarmMessage"></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- WORLD CLOCKS -->
+
+<h2 class="section-title">
+    🌍 World Time Zones 🌍
+</h2>
+
+<section class="world-grid" id="worldGrid"></section>
+
+<!-- GAME -->
+
+<section class="game-section">
+
+    <h2 class="section-title">
+        🎮 Guess The Time Game 🎮
+    </h2>
+
+    <div class="game-box">
+
+        <div id="question">
+            Guess the time in Tokyo!
+        </div>
+
+        <input type="text"
+               id="answer"
+               placeholder="Example: 14:30">
+
+        <br>
+
+        <button onclick="checkAnswer()">
+            Submit
+        </button>
+
+        <button onclick="newQuestion()">
+            New Question
+        </button>
+
+        <div class="score">
+            ⭐ Score:
+            <span id="score">0</span>
+        </div>
+
+        <div class="score">
+            🏆 High Score:
+            <span id="highScore">0</span>
+        </div>
+
+        <div id="result"></div>
+
+        <div id="timer">
+            ⏳ 15
+        </div>
+
+    </div>
+
+</section>
+
+<script>
+
+/* WORLD TIME ZONES */
+
+const zones = [
+
+{
+    city:"New York",
+    zone:"America/New_York"
+},
+
+{
+    city:"London",
+    zone:"Europe/London"
+},
+
+{
+    city:"Tokyo",
+    zone:"Asia/Tokyo"
+},
+
+{
+    city:"Sydney",
+    zone:"Australia/Sydney"
+},
+
+{
+    city:"Dubai",
+    zone:"Asia/Dubai"
+},
+
+{
+    city:"India",
+    zone:"Asia/Kolkata"
+},
+
+{
+    city:"Paris",
+    zone:"Europe/Paris"
+},
+
+{
+    city:"Los Angeles",
+    zone:"America/Los_Angeles"
+}
+
+];
+
+/* CREATE WORLD CLOCKS */
+
+const worldGrid =
+    document.getElementById("worldGrid");
+
+zones.forEach((zone,index)=>{
+
+    worldGrid.innerHTML += `
+
+    <div class="world-card">
+
+        <div class="city">
+            ${zone.city}
+        </div>
+
+        <div class="time"
+             id="time${index}">
+        </div>
+
+        <div class="date"
+             id="date${index}">
+        </div>
+
+        <div class="mini-clock">
+
+            <div class="mini-hour"
+                 id="hour${index}">
+            </div>
+
+            <div class="mini-minute"
+                 id="minute${index}">
+            </div>
+
+            <div class="mini-second"
+                 id="second${index}">
+            </div>
+
+            <div class="mini-center"></div>
+
+        </div>
+
+    </div>
+
+    `;
+
+});
+
+/* MAIN CLOCK */
+
+function updateMainClock(){
+
+    const now = new Date();
+
+    let h = now.getHours();
+    let m = now.getMinutes();
+    let s = now.getSeconds();
+
+    let session = "AM";
+
+    if(h >= 12){
+        session = "PM";
+    }
+
+    if(h > 12){
+        h -= 12;
+    }
+
+    if(h == 0){
+        h = 12;
+    }
+
+    h = String(h).padStart(2,'0');
+    m = String(m).padStart(2,'0');
+    s = String(s).padStart(2,'0');
+
+    document.getElementById("digitalClock").innerHTML =
+        `${h}:${m}:${s} ${session}`;
+
+    const now2 = new Date();
+
+    const hourDeg =
+        ((now2.getHours() % 12) / 12) * 360 +
+        (now2.getMinutes() / 60) * 30;
+
+    const minuteDeg =
+        (now2.getMinutes() / 60) * 360;
+
+    const secondDeg =
+        (now2.getSeconds() / 60) * 360;
+
+    document.getElementById("hour").style.transform =
+        `translateX(-50%) rotate(${hourDeg}deg)`;
+
+    document.getElementById("minute").style.transform =
+        `translateX(-50%) rotate(${minuteDeg}deg)`;
+
+    document.getElementById("second").style.transform =
+        `translateX(-50%) rotate(${secondDeg}deg)`;
+
+}
+
+/* WORLD CLOCKS */
+
+function updateWorldClocks(){
+
+    zones.forEach((zone,index)=>{
+
+        const now =
+            new Date(
+                new Date().toLocaleString(
+                    "en-US",
+                    {
+                        timeZone:zone.zone
+                    }
+                )
+            );
+
+        document.getElementById(`time${index}`).innerHTML =
+            now.toLocaleTimeString();
+
+        document.getElementById(`date${index}`).innerHTML =
+            now.toDateString();
+
+        const hourDeg =
+            ((now.getHours() % 12) / 12) * 360 +
+            (now.getMinutes() / 60) * 30;
+
+        const minuteDeg =
+            (now.getMinutes() / 60) * 360;
+
+        const secondDeg =
+            (now.getSeconds() / 60) * 360;
+
+        document.getElementById(`hour${index}`).style.transform =
+            `translateX(-50%) rotate(${hourDeg}deg)`;
+
+        document.getElementById(`minute${index}`).style.transform =
+            `translateX(-50%) rotate(${minuteDeg}deg)`;
+
+        document.getElementById(`second${index}`).style.transform =
+            `translateX(-50%) rotate(${secondDeg}deg)`;
+
+    });
+
+}
+
+/* ALARM */
+
+let alarmTime = null;
+let alarmPlayed = false;
+
+function setAlarm(){
+
+    alarmTime =
+        document.getElementById("alarmInput").value;
+
+    document.getElementById("alarmMessage").innerHTML =
+        `✅ Alarm set for ${alarmTime}`;
+
+}
+
+function checkAlarm(){
+
+    if(!alarmTime) return;
+
+    const now = new Date();
+
+    const currentTime =
+        String(now.getHours()).padStart(2,'0')
+        + ":" +
+        String(now.getMinutes()).padStart(2,'0');
+
+    if(currentTime === alarmTime && !alarmPlayed){
+
+        alarmPlayed = true;
+
+        document.getElementById("alarmMessage").innerHTML =
+            "💥 ALARM ACTIVATED 💥";
+
+        explosionEffect();
+
+        const audio =
+            new Audio(
+                "https://www.soundjay.com/explosion/explosion-01.mp3"
+            );
+
+        audio.play();
+
+    }
+
+}
+
+/* EXPLOSION */
+
+function explosionEffect(){
+
+    for(let i=0;i<50;i++){
+
+        const boom =
+            document.createElement("div");
+
+        boom.classList.add("explosion");
+
+        boom.style.left =
+            Math.random() * window.innerWidth + "px";
+
+        boom.style.top =
+            Math.random() * window.innerHeight + "px";
+
+        boom.style.background =
+            `hsl(${Math.random()*360},100%,50%)`;
+
+        document.body.appendChild(boom);
+
+        setTimeout(()=>{
+            boom.remove();
+        },1000);
+
+    }
+
+}
+
+/* GAME */
+
+let score = 0;
+let highScore = 0;
+
+let currentAnswer = "";
+
+let timer = 15;
+
+let interval;
+
+function newQuestion(){
+
+    clearInterval(interval);
+
+    timer = 15;
+
+    document.getElementById("timer").innerHTML =
+        `⏳ ${timer}`;
+
+    const randomZone =
+        zones[
+            Math.floor(
+                Math.random() * zones.length
+            )
+        ];
+
+    document.getElementById("question").innerHTML =
+        `Guess the time in ${randomZone.city}!`;
+
+    currentAnswer =
+        new Date().toLocaleTimeString(
+            [],
+            {
+                timeZone:randomZone.zone,
+                hour:'2-digit',
+                minute:'2-digit',
+                hour12:false
+            }
+        );
+
+    document.getElementById("answer").value = "";
+
+    interval = setInterval(()=>{
+
+        timer--;
+
+        document.getElementById("timer").innerHTML =
+            `⏳ ${timer}`;
+
+        if(timer <= 0){
+
+            clearInterval(interval);
+
+            document.getElementById("result").innerHTML =
+                "💥 TIME UP 💥";
+
+            score = 0;
+
+            document.getElementById("score").innerHTML =
+                score;
+
+            newQuestion();
+
+        }
+
+    },1000);
+
+}
+
+function checkAnswer(){
+
+    const userAnswer =
+        document.getElementById("answer").value;
+
+    if(userAnswer === currentAnswer){
+
+        score++;
+
+        if(score > highScore){
+            highScore = score;
+        }
+
+        document.getElementById("score").innerHTML =
+            score;
+
+        document.getElementById("highScore").innerHTML =
+            highScore;
+
+        document.getElementById("result").innerHTML =
+            "🎉 Correct 🎉";
+
+        explosionEffect();
+
+        newQuestion();
+
+    }else{
+
+        document.getElementById("result").innerHTML =
+            `❌ Wrong! Correct: ${currentAnswer}`;
+
+    }
+
+}
+
+/* START */
+
+setInterval(()=>{
+
+    updateMainClock();
+
+    updateWorldClocks();
+
+    checkAlarm();
+
+},1000);
+
+updateMainClock();
+
+updateWorldClocks();
+
+newQuestion();
+
+</script>
+
+</body>
+</html>
