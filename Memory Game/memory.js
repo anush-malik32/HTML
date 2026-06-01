@@ -1,6 +1,7 @@
 const emojis=["💸","🔫","🗡","⚗️","🪄","🔒","🪅","🧼"];
 let cards = [];
 let flippedcards = [];
+let matchedpairs = 0;
 const board= document.getElementById("gameboard");
 const message= document.getElementById("message");
 
@@ -17,5 +18,24 @@ function flipcard() {
     }       
     if (flippedcards.length==2) {
         checkMatch();
+    }
+}
+function checkMatch() {
+    const [card1, card2] = flippedcards;
+    if (card1.dataset.emoji == card2.dataset.emoji) {
+        matchedpairs++;
+        flippedcards = [];
+        if (matchedpairs == emojis.length) {
+            message.textContent = "You Win";
+        }
+    }
+    else {
+        setTimeout (
+            ()=> {
+                card1.classList.add("hidden");
+                card2.classList.add("hidden");
+                flippedcards = [];
+            },1000
+        );
     }
 }
