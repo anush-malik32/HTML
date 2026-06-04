@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Forbidden Die</title>
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    background:
+    radial-gradient(circle at top,#2a0044,#050505);
+    color:white;
+    font-family:Verdana,sans-serif;
+    text-align:center;
+    overflow-x:hidden;
+}
+
+h1{
+    color:#ff4dff;
+    text-shadow:0 0 15px purple;
+}
+
+#dice{
+    font-size:220px;
+    cursor:pointer;
+    transition:0.3s;
+    user-select:none;
+    text-shadow:
+        0 0 20px cyan,
+        0 0 40px magenta,
+        0 0 60px purple;
+}
+
+#dice:hover{
+    transform:scale(1.1);
+}
+
+.rollAnimation{
+    animation:shake 0.7s;
+}
+
+@keyframes shake{
+    0%{transform:rotate(0deg);}
+    10%{transform:rotate(-20deg);}
+    20%{transform:rotate(20deg);}
+    30%{transform:rotate(-20deg);}
+    40%{transform:rotate(20deg);}
+    50%{transform:rotate(-15deg);}
+    60%{transform:rotate(15deg);}
+    70%{transform:rotate(-10deg);}
+    80%{transform:rotate(10deg);}
+    90%{transform:rotate(-5deg);}
+    100%{transform:rotate(0deg);}
+}
+
+.warning{
+    color:#ff6666;
+    font-size:20px;
+    margin:10px;
+    text-shadow:0 0 10px red;
+}
+
+#stats{
+    width:90%;
+    max-width:900px;
+    margin:auto;
+    background:rgba(255,255,255,0.08);
+    padding:15px;
+    border-radius:15px;
+    backdrop-filter:blur(5px);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,td{
+    border:1px solid #666;
+    padding:8px;
+}
+
+th{
+    background:#330044;
+}
+
+canvas{
+    margin-top:20px;
+    background:white;
+    border-radius:10px;
+}
+
+#totalRolls{
+    font-size:24px;
+    color:cyan;
+}
+
+.floatingText{
+    position:fixed;
+    color:rgba(255,255,255,0.15);
+    font-size:22px;
+    pointer-events:none;
+    animation:float 20s linear infinite;
+}
+
+@keyframes float{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-120vh);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>☠ THE FORBIDDEN DIE ☠</h1>
+
+<div class="warning">Do not roll it.</div>
+<div class="warning">Nobody knows why the numbers appear.</div>
+<div class="warning">The die remembers every roll.</div>
+
+<div id="dice">⚀</div>
+
+<div id="totalRolls">
+Total Rolls: 0
+</div>
+
+<br>
+
+<div id="stats">
+
+<h2>Probability Table</h2>
+
+<table>
+<thead>
+<tr>
+<th>Number</th>
+<th>Theoretical Probability</th>
+<th>Experimental Probability</th>
+<th>Times Rolled</th>
+</tr>
+</thead>
+
+<tbody id="probTable"></tbody>
+
+</table>
+
+<h2>Roll History Line Plot</h2>
+
+<canvas id="graph" width="800" height="400"></canvas>
+
+</div>
+
+<script>
+
+const dices=[
+'⚀',
+'⚁',
+'⚂',
+'⚃',
+'⚄',
+'⚅'
+];
+
+const counts=[0,0,0,0,0,0];
+let totalRolls=0;
+
+const dice=document.getElementById("dice");
+const table=document.getElementById("probTable");
+const canvas=document.getElementById("graph");
+const ctx=canvas.getContext("2d");
+
+function updateTable(){
+
+table.innerHTML="";
+
+for(let i=0;i<6;i++){
+
+let experimental=
+totalRolls===0
+? "0%"
+: ((counts[i]/totalRolls)*100).toFixed(2)+"%";
+
+table.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>16.67%</td>
+<td>${experimental}</td>
+<td>${counts[i]}</td>
+</tr>
+`;
+}
+}
+
+function drawGraph(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.strokeStyle="black";
+ctx.lineWidth=2;
+
+ctx.beginPath();
+ctx.moveTo(50,350);
+ctx.lineTo(750,350);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(50,350);
+ctx.lineTo(50,50);
+ctx.stroke();
+
+ctx.fillStyle="black";
+
+for(let i=0;i<6;i++){
+    ctx.fillText(i+1,100+i*110,370);
+}
+
+let max=Math.max(...counts,1);
+
+ctx.strokeStyle="purple";
+ctx.lineWidth=3;
+ctx.beginPath();
+
+for(let i=0;i<6;i++){
+
+let x=100+i*110;
+let y=350-(counts[i]/max)*250;
+
+if(i===0){
+    ctx.moveTo(x,y);
+}
+else{
+    ctx.lineTo(x,y);
+}
+
+ctx.fillStyle="red";
+ctx.beginPath();
+ctx.arc(x,y,6,0,Math.PI*2);
+ctx.fill();
+
+ctx.fillStyle="black";
+ctx.fillText(counts[i],x-5,y-10);
+}
+
+ctx.stroke();
+}
+
+function rollDice(){
+
+dice.classList.add("rollAnimation");
+
+let flashes=0;
+
+let interval=setInterval(()=>{
+
+let random=Math.floor(Math.random()*6);
+dice.innerHTML=dices[random];
+
+flashes++;
+
+if(flashes>12){
+
+clearInterval(interval);
+
+let final=Math.floor(Math.random()*6);
+
+dice.innerHTML=dices[final];
+
+counts[final]++;
+totalRolls++;
+
+document.getElementById("totalRolls").innerHTML=
+"Total Rolls: "+totalRolls;
+
+updateTable();
+drawGraph();
+
+dice.classList.remove("rollAnimation");
+}
+
+},60);
+}
+
+dice.addEventListener("click",rollDice);
+
+updateTable();
+drawGraph();
+
+const creepyMessages=[
+"Don't click it.",
+"The die is watching.",
+"Some numbers should stay hidden.",
+"Every roll changes something.",
+"Why are you still here?",
+"The die knows your next move."
+];
+
+for(let i=0;i<10;i++){
+
+let text=document.createElement("div");
+
+text.className="floatingText";
+text.innerHTML=
+creepyMessages[
+Math.floor(Math.random()*creepyMessages.length)
+];
+
+text.style.left=Math.random()*95+"%";
+text.style.animationDuration=
+(10+Math.random()*20)+"s";
+
+document.body.appendChild(text);
+}
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Creepy Coin Probability Lab</title>
+
+<style>
+
+:root{
+    --bg:#05060b;
+    --panel:#111522;
+    --text:white;
+}
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:white;
+    background:
+    radial-gradient(circle at 20% 20%, rgba(100,0,255,.25), transparent),
+    radial-gradient(circle at 80% 20%, rgba(0,255,255,.15), transparent),
+    radial-gradient(circle at 50% 90%, rgba(255,0,100,.15), transparent),
+    #05060b;
+    text-align:center;
+    overflow-x:hidden;
+}
+
+/* creepy floating messages */
+
+.warning{
+    position:fixed;
+    opacity:.15;
+    font-size:24px;
+    font-weight:bold;
+    pointer-events:none;
+    animation:flicker 5s infinite;
+}
+
+.warning:nth-child(1){
+    top:5%;
+    left:5%;
+}
+
+.warning:nth-child(2){
+    top:10%;
+    right:5%;
+}
+
+.warning:nth-child(3){
+    bottom:15%;
+    left:10%;
+}
+
+.warning:nth-child(4){
+    bottom:10%;
+    right:10%;
+}
+
+@keyframes flicker{
+    50%{
+        opacity:.3;
+    }
+}
+
+/* main area */
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:rgba(255,255,255,.05);
+    border-radius:20px;
+    padding:20px;
+    margin-top:20px;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+#coin{
+    width:250px;
+    height:250px;
+    border-radius:50%;
+    margin:auto;
+    font-size:130px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+    135deg,
+    #6300ff,
+    #00ffff,
+    #ff005d);
+
+    box-shadow:
+    0 0 30px #6300ff,
+    0 0 50px #00ffff;
+
+    transition:transform .2s;
+}
+
+#coin:hover{
+    transform:scale(1.05);
+}
+
+.flip{
+    animation:flip .7s linear;
+}
+
+@keyframes flip{
+
+    0%{
+        transform:rotateY(0deg);
+    }
+
+    100%{
+        transform:rotateY(1080deg);
+    }
+
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    margin:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:10px;
+    border:1px solid rgba(255,255,255,.1);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:10px;
+}
+
+.stat{
+    background:rgba(255,255,255,.05);
+    padding:15px;
+    border-radius:10px;
+}
+
+canvas{
+    background:black;
+    border-radius:10px;
+    width:100%;
+}
+
+.quizQuestion{
+    font-size:22px;
+    margin:20px;
+}
+
+input{
+    padding:10px;
+    font-size:18px;
+    text-align:center;
+    width:120px;
+}
+
+#result{
+    font-size:22px;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.correct{
+    color:lime;
+}
+
+.wrong{
+    color:red;
+}
+
+</style>
+</head>
+<body>
+
+<div class="warning">DO NOT FLIP IT</div>
+<div class="warning">THE COIN IS WATCHING</div>
+<div class="warning">HEADS KNOWS YOUR NAME</div>
+<div class="warning">TAILS IS HUNGRY</div>
+
+<div class="container">
+
+<h1>👁️ Creepy Coin Probability Lab 👁️</h1>
+
+<div class="card">
+
+<div id="coin">👹</div>
+
+<p>Click the coin if you dare...</p>
+
+<button onclick="flipCoin()">
+Flip Coin
+</button>
+
+<button onclick="resetData()">
+Reset
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>Probability Table</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Count</th>
+<th>Theoretical</th>
+<th>Experimental</th>
+</tr>
+</thead>
+
+<tbody id="tableBody">
+</tbody>
+
+</table>
+
+</div>
+
+<div class="card">
+
+<h2>Statistics</h2>
+
+<div class="stats">
+
+<div class="stat">
+<h3>Total Flips</h3>
+<div id="totalFlips">0</div>
+</div>
+
+<div class="stat">
+<h3>Heads</h3>
+<div id="headsCount">0</div>
+</div>
+
+<div class="stat">
+<h3>Tails</h3>
+<div id="tailsCount">0</div>
+</div>
+
+<div class="stat">
+<h3>Last Flip</h3>
+<div id="lastFlip">-</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Line Plot</h2>
+
+<canvas id="graph" width="900" height="400"></canvas>
+
+</div>
+
+<div class="card">
+
+<h2>Probability Quiz</h2>
+
+<div class="quizQuestion" id="question">
+Press Generate Question
+</div>
+
+<button onclick="generateQuestion()">
+Generate Question
+</button>
+
+<br><br>
+
+<input id="numerator" placeholder="Top">
+
+<span style="font-size:24px;">/</span>
+
+<input id="denominator" placeholder="Bottom">
+
+<br><br>
+
+<button onclick="checkAnswer()">
+Submit Answer
+</button>
+
+<div id="result"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const headsEmoji="👹";
+const tailsEmoji="🐉";
+
+let heads=0;
+let tails=0;
+let total=0;
+
+let correctNum=0;
+let correctDen=1;
+
+const coin=document.getElementById("coin");
+
+function gcd(a,b){
+    while(b){
+        let temp=b;
+        b=a%b;
+        a=temp;
+    }
+    return a;
+}
+
+function simplify(n,d){
+
+    let g=gcd(n,d);
+
+    return {
+        n:n/g,
+        d:d/g
+    };
+}
+
+function flipCoin(){
+
+    coin.classList.add("flip");
+
+    setTimeout(()=>{
+
+        let flip=Math.random()<0.5;
+
+        if(flip){
+
+            coin.innerHTML=headsEmoji;
+            heads++;
+
+            document.getElementById("lastFlip").innerHTML="Heads 👹";
+
+        }else{
+
+            coin.innerHTML=tailsEmoji;
+            tails++;
+
+            document.getElementById("lastFlip").innerHTML="Tails 🐉";
+
+        }
+
+        total++;
+
+        updateTable();
+        drawGraph();
+
+        coin.classList.remove("flip");
+
+    },700);
+
+}
+
+function updateTable(){
+
+    document.getElementById("totalFlips").innerHTML=total;
+    document.getElementById("headsCount").innerHTML=heads;
+    document.getElementById("tailsCount").innerHTML=tails;
+
+    let hExp=total ?
+        ((heads/total)*100).toFixed(2)+"%"
+        :"0%";
+
+    let tExp=total ?
+        ((tails/total)*100).toFixed(2)+"%"
+        :"0%";
+
+    document.getElementById("tableBody").innerHTML=
+    `
+    <tr>
+    <td>👹 Heads</td>
+    <td>${heads}</td>
+    <td>1/2 (50%)</td>
+    <td>${hExp}</td>
+    </tr>
+
+    <tr>
+    <td>🐉 Tails</td>
+    <td>${tails}</td>
+    <td>1/2 (50%)</td>
+    <td>${tExp}</td>
+    </tr>
+    `;
+}
+
+function drawGraph(){
+
+    let canvas=document.getElementById("graph");
+    let ctx=canvas.getContext("2d");
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    let data=[heads,tails];
+
+    let labels=["Heads","Tails"];
+
+    let max=Math.max(...data,1);
+
+    let spacing=300;
+
+    let points=[];
+
+    for(let i=0;i<data.length;i++){
+
+        let x=200+i*spacing;
+
+        let y=320-(data[i]/max)*250;
+
+        points.push({x,y});
+
+    }
+
+    ctx.strokeStyle="cyan";
+    ctx.lineWidth=4;
+
+    ctx.beginPath();
+
+    ctx.moveTo(points[0].x,points[0].y);
+
+    ctx.lineTo(points[1].x,points[1].y);
+
+    ctx.stroke();
+
+    for(let i=0;i<points.length;i++){
+
+        ctx.fillStyle="magenta";
+
+        ctx.beginPath();
+
+        ctx.arc(points[i].x,points[i].y,10,0,Math.PI*2);
+
+        ctx.fill();
+
+        ctx.fillStyle="white";
+
+        ctx.font="20px Arial";
+
+        ctx.fillText(labels[i],points[i].x-40,360);
+
+        ctx.fillText(data[i],points[i].x-5,points[i].y-15);
+
+    }
+
+}
+
+function generateQuestion(){
+
+    if(total===0){
+
+        question.innerHTML=
+        "Flip the coin first!";
+
+        return;
+    }
+
+    let type=Math.floor(Math.random()*4);
+
+    if(type===0){
+
+        correctNum=heads;
+        correctDen=total;
+
+        question.innerHTML=
+        `What is the probability of Heads based on the experiment?`;
+
+    }
+
+    else if(type===1){
+
+        correctNum=tails;
+        correctDen=total;
+
+        question.innerHTML=
+        `What is the probability of Tails based on the experiment?`;
+
+    }
+
+    else if(type===2){
+
+        correctNum=1;
+        correctDen=2;
+
+        question.innerHTML=
+        `What is the theoretical probability of Heads?`;
+
+    }
+
+    else{
+
+        correctNum=1;
+        correctDen=2;
+
+        question.innerHTML=
+        `What is the theoretical probability of Tails?`;
+
+    }
+
+}
+
+function checkAnswer(){
+
+    let userNum=parseInt(
+        document.getElementById("numerator").value
+    );
+
+    let userDen=parseInt(
+        document.getElementById("denominator").value
+    );
+
+    if(!userNum || !userDen){
+
+        result.innerHTML=
+        "Enter a valid fraction.";
+
+        return;
+    }
+
+    let user=simplify(userNum,userDen);
+
+    let answer=simplify(
+        correctNum,
+        correctDen
+    );
+
+    if(
+        user.n===answer.n &&
+        user.d===answer.d
+    ){
+
+        result.className="correct";
+
+        result.innerHTML=
+        `Correct! Simplified answer = ${answer.n}/${answer.d}`;
+
+    }
+    else{
+
+        result.className="wrong";
+
+        result.innerHTML=
+        `Incorrect. Correct answer = ${answer.n}/${answer.d}`;
+
+    }
+
+}
+
+function resetData(){
+
+    heads=0;
+    tails=0;
+    total=0;
+
+    coin.innerHTML=headsEmoji;
+
+    updateTable();
+    drawGraph();
+
+    result.innerHTML="";
+    question.innerHTML=
+    "Press Generate Question";
+
+}
+
+updateTable();
+drawGraph();
+
+</script>
+
+</body>
+</html>
