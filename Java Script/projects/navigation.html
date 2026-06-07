@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+        header {
+            width: 100%;
+            padding: 10px 0;
+        }
+        .navbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .navbar button {
+            background-color: rgb(0, 180, 171);
+            color: rgb(255, 255, 255);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+        .navbar button:hover {
+            background-color: blue;
+        }
+        @media (min-width: 768px) {
+            body {
+                font-size: 16px;
+            }
+        }
+        @media (min-width: 1024px) {
+            body {
+                font-size: 18px;
+            }
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <header>
+    <nav class="navbar">
+       <button onclick="location.href='#home'">Home</button>
+       <button onclick="about.href='#about'">About</button>
+       <button onclick="services.href='#services'">Services</button>
+       <button onclick="contacts.href='#contacts'">Contacts</button>
+    </nav>
+    </header>
+</body>
+</html>
