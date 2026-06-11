@@ -11,6 +11,26 @@ function shuffle(array) {
         [array[i],array[j]] = [array[j],array[i]];
     }
 }
+function startGame() {
+    board.innerHTML="";
+    message.textContent="";
+    flippedcards=[];
+    matchedpairs=0;
+
+    cards=[...emojis,...emojis];
+    shuffle(cards);
+
+    cards.forEach((emoji,index)=>{
+        const card = document.createElement("div");
+        card.classList.add("card","hidden");
+        card.dataset.emoji=emoji;
+        card.dataset.index=index;
+        card.textContent=emoji;
+
+        card.addEventListener("click",flipcard);
+        board.appendChild(card);
+    })
+}
 function flipcard() {
     if (flippedcards.length<2 && this.classList.contains("hidden")) {
         this.classList.remove("hidden");
@@ -39,3 +59,4 @@ function checkMatch() {
         );
     }
 }
+startGame();
