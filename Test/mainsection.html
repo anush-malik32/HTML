@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        header{
+            font-size:xx-large;
+            text-align: center;
+        }
+        h1{
+            font-size:xx-large;
+            text-align: center;
+        }
+        body{
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #f4d068 0%, #E0A96D 100%);
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .content {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+            <header><b>FurEver Homes</b></header>
+            <h1>Welcome, Dog Lovers! 🐾</h1>
+            <p>This page features a dog shelter which takes in dogs mistreated by former owners and given new, improved homes.</p>
+            <h1>Dogs Available To Adopt</h1>
+
+  <p>
+    Click the button to show your new FurEver friend.
+  </p>
+
+  <button onclick="showHeroes()">Show Dogs</button>
+
+  <div class="card-container" id="heroCards"></div>
+
+  <script>
+    // What is a Class?
+    // A class is a blueprint used to create objects.
+
+    class Superhero {
+
+      // Constructor
+      constructor(name, breed, mission) {
+
+        // The this keyword stores values inside the object
+        this.name = name;
+        this.power = breed;
+        this.mission = mission;
+      }
+
+      // Class Method
+      describeHero() {
+        return "<div class='hero-card'>" +
+               "<p class='hero-name'>" + this.name + "</p>" +
+               "<p class='hero-breed'>Breed: " + this.breed + "</p>" +
+               "<p class='hero-mission'>Mission: " + this.mission + "</p>" +
+               "</div>";
+      }
+    }
+
+    function showHeroes() {
+
+      // Creating Objects
+      let hero1 = new Superhero(
+        "Roxy",
+        "Maltipoo",
+        "To meet everybody around her"
+      );
+
+      let hero2 = new Superhero(
+        "Dash",
+        "Golden Retriever",
+        "To run around the whole world",
+      );
+
+      let hero3 = new Superhero(
+        "Logic Girl",
+        "Smart problem-solving",
+        "Use logic to solve tricky challenges."
+      );
+
+      let hero4 = new Superhero(
+        "Data Knight",
+        "Data protection",
+        "Keep important information safe."
+      );
+
+      document.getElementById("heroCards").innerHTML =
+        hero1.describeHero() +
+        hero2.describeHero() +
+        hero3.describeHero() +
+        hero4.describeHero();
+    }
+  </script>
+    </div>
+</body>
+</html>
