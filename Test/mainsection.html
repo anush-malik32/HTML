@@ -14,13 +14,13 @@
             text-align: center;
         }
         body{
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             background: linear-gradient(135deg, #f4d068 0%, #E0A96D 100%);
             background-attachment: fixed;
             font-family: Arial, sans-serif;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             color: #333;
         }
@@ -29,82 +29,159 @@
             padding: 20px;
             border-radius: 10px;
         }
+
+        .card-container{
+            display:flex;
+            flex-wrap:wrap;
+            gap:15px;
+            margin-top:20px;
+        }
+
+        .hero-card{
+            border:2px solid #333;
+            border-radius:10px;
+            padding:15px;
+            background:white;
+            width:200px;
+            box-shadow:0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .hero-name{
+            font-size:20px;
+            font-weight:bold;
+        }
+        .dog-navbar {
+          background-color: #FFD166;
+          color: #073B4C;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 15px 30px;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          box-sizing: border-box;
+          font-family: 'Arial', sans-serif;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .dog-navbar .logo {
+          font-size: 24px;
+          font-weight: bold;
+        }
+        .nav-links a {
+          color: #073B4C;
+          text-decoration: none;
+          margin-left: 25px;
+          font-size: 18px;
+          font-weight: bold;
+        }
+        .nav-links a:hover {
+          color: #ef476f;
+        }
+        html {
+          scroll-behavior: smooth;
+        }
+        h2 {
+          text-align: center;
+          font-size: xx-large;
+        }
     </style>
 </head>
-<body>
+<body id="top">
+  <nav class="dog-navbar">
+    <div class="logo">🐾 Paws & Claws</div>
+    <div class="nav-links">
+      <a href="#top">Beginning</a>
+      <a href="#dog-cards">Our dogs</a>
+      <a href="#footer">Contacts</a>
+    </div>
+  </nav>
     <div class="content">
-            <header><b>FurEver Homes</b></header>
-            <h1>Welcome, Dog Lovers! 🐾</h1>
-            <p>This page features a dog shelter which takes in dogs mistreated by former owners and given new, improved homes.</p>
-            <h1>Dogs Available To Adopt</h1>
+        <header><b>FurEver Homes</b></header>
+        <h1>Welcome, Dog Lovers! 🐾</h1>
+        <p>This page features a dog shelter dedicated to rescuing dogs that have been neglected, abandoned, or mistreated by their previous owners. Our shelter provides these dogs with a safe and caring environment where they receive proper food, medical attention, training, and plenty of love. Each dog is given the opportunity to recover, build trust, and prepare for a brighter future. Our goal is to match every dog with a responsible and loving family that can provide a permanent home filled with care, companionship, and happiness. By adopting from our shelter, you are not only gaining a loyal friend but also giving a deserving dog a second chance at life. 🐾❤️</p>
+        <h1>Dogs Available To Adopt</h1>
+        <section id="dog-cards">
+        <p>
+            Every dog deserves a warm bed, a full bowl of food, and a family that loves them. Sadly, not every dog gets that chance. Some dogs arrive at our shelter frightened, hungry, and alone after being abandoned, neglected, or mistreated by previous owners. Many have spent days, weeks, or even months without the care and affection they needed.
 
-  <p>
-    Click the button to show your new FurEver friend.
-  </p>
+When these dogs first come to us, they are often scared of people and unsure if they can trust again. Our dedicated team works patiently to help them heal. We provide nutritious meals, veterinary care, safe shelter, and most importantly, kindness and love. Day by day, we watch shy tails begin to wag, fearful eyes become hopeful, and lonely hearts learn to trust once more.
 
-  <button onclick="showHeroes()">Show Dogs</button>
+Every rescue story is a journey from hardship to happiness. The dogs in our care are given a second chance to experience the joy they deserve. Through adoption, these wonderful animals find loving forever homes where they can play, grow, and be cherished members of a family.
 
-  <div class="card-container" id="heroCards"></div>
+By supporting our shelter, you help transform lives. Together, we can turn stories of sadness into stories of hope, happiness, and new beginnings—one paw at a time. 🐾❤️
+Click the button to show your new FurEver friend.
+        </p>
 
-  <script>
-    // What is a Class?
-    // A class is a blueprint used to create objects.
+        <button onclick="showHeroes()">Show Dogs</button>
 
-    class Superhero {
+        <div class="card-container" id="heroCards"></div>
+        </section>
+        <footer id="footer">
+          <h2>Anush Malik</h2>
+          <p>My name is Anush Malik and I am a 7th grader at Lazar Middle School. It all started on a cold, rainy afternoon when I was walking home from school. As I passed through a nearby park, I noticed a small dog sitting alone under a bench. Its fur was dirty and matted, and it looked frightened every time someone walked by. While everyone else continued on their way, I couldn't stop thinking about how scared and lonely that dog must have felt.
 
-      // Constructor
-      constructor(name, breed, mission) {
+I carefully approached the dog and offered it some food and water. At first, it was hesitant, but after a few minutes, it slowly came closer. Seeing the relief in its eyes made me realize how many animals might be suffering without anyone to help them. That day, I brought the dog to a local veterinarian, where I learned that it had been abandoned by its previous owner.
 
-        // The this keyword stores values inside the object
-        this.name = name;
-        this.power = breed;
-        this.mission = mission;
-      }
+The experience stayed with me. I began learning more about animal rescue and discovered that many dogs are neglected, abandoned, or mistreated every year. I decided that if I could help even a few of them, it would make a difference.
 
-      // Class Method
-      describeHero() {
-        return "<div class='hero-card'>" +
-               "<p class='hero-name'>" + this.name + "</p>" +
-               "<p class='hero-breed'>Breed: " + this.breed + "</p>" +
-               "<p class='hero-mission'>Mission: " + this.mission + "</p>" +
-               "</div>";
-      }
-    }
+What started with one rescued dog soon grew into a mission. Whenever I heard about a dog in need, I worked with friends, neighbors, and local animal organizations to help. Some dogs needed medical care, some needed food and shelter, and others simply needed someone to show them kindness. Slowly, more and more dogs found their way into our care.
 
-    function showHeroes() {
+Today, our shelter provides a safe place for dogs that have nowhere else to go. Every wagging tail, every happy bark, and every successful adoption reminds me why I started. The frightened dog I found under that bench inspired a journey that has helped countless dogs find loving forever homes. What began as one small act of kindness became a lifelong commitment to giving dogs the second chance they deserve. 🐾❤️
+</p>
+        </footer>
+        <script>
+            class Superhero {
 
-      // Creating Objects
-      let hero1 = new Superhero(
-        "Roxy",
-        "Maltipoo",
-        "To meet everybody around her"
-      );
+                constructor(name, breed, mission) {
+                    this.name = name;
+                    this.breed = breed;
+                    this.mission = mission;
+                }
 
-      let hero2 = new Superhero(
-        "Dash",
-        "Golden Retriever",
-        "To run around the whole world",
-      );
+                describeHero() {
+                    return "<div class='hero-card'>" +
+                           "<p class='hero-name'>" + this.name + "</p>" +
+                           "<p class='hero-breed'>Breed: " + this.breed + "</p>" +
+                           "<p class='hero-mission'>Mission: " + this.mission + "</p>" +
+                           "</div>";
+                }
+            }
 
-      let hero3 = new Superhero(
-        "Logic Girl",
-        "Smart problem-solving",
-        "Use logic to solve tricky challenges."
-      );
+            function showHeroes() {
 
-      let hero4 = new Superhero(
-        "Data Knight",
-        "Data protection",
-        "Keep important information safe."
-      );
+                let hero1 = new Superhero(
+                    "Roxy",
+                    "Maltipoo",
+                    "To meet everybody around her"
+                );
 
-      document.getElementById("heroCards").innerHTML =
-        hero1.describeHero() +
-        hero2.describeHero() +
-        hero3.describeHero() +
-        hero4.describeHero();
-    }
-  </script>
+                let hero2 = new Superhero(
+                    "Dash",
+                    "Golden Retriever",
+                    "To run around the whole world"
+                );
+
+                let hero3 = new Superhero(
+                    "Rosy",
+                    "German Shepherd",
+                    "To learn every single dog trick in one day"
+                );
+
+                let hero4 = new Superhero(
+                    "Bulldozer",
+                    "Pitbull",
+                    "To keep its family safe"
+                );
+
+                document.getElementById("heroCards").innerHTML =
+                    hero1.describeHero() +
+                    hero2.describeHero() +
+                    hero3.describeHero() +
+                    hero4.describeHero();
+            }
+        </script>
     </div>
 </body>
 </html>
