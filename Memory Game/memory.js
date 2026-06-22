@@ -1,7 +1,8 @@
-const emojis=["💸","🔫","🗡","⚗️","🪄","🔒","🪅","🧼"];
+const emojis=["🦄","🤡","🐸","🍕","🦖","🍩","🐵","👾"];
 let cards = [];
 let flippedcards = [];
 let matchedpairs = 0;
+let lockBoard = false;
 const board= document.getElementById("gameboard");
 const message= document.getElementById("message");
 
@@ -16,7 +17,7 @@ function startGame() {
     message.textContent="";
     flippedcards=[];
     matchedpairs=0;
-
+    lockBoard = false;
     cards=[...emojis,...emojis];
     shuffle(cards);
 
@@ -32,11 +33,13 @@ function startGame() {
     })
 }
 function flipcard() {
+    if (lockBoard) return;
+    if (flippedcards.includes(this)) return;
     if (flippedcards.length<2 && this.classList.contains("hidden")) {
         this.classList.remove("hidden");
         flippedcards.push(this);
     }       
-    if (flippedcards.length==2) {
+    if (flippedcards.length == 2) {
         checkMatch();
     }
 }
@@ -46,15 +49,17 @@ function checkMatch() {
         matchedpairs++;
         flippedcards = [];
         if (matchedpairs == emojis.length) {
-            message.textContent = "You Win";
+            message.textContent = "🎉 You Win";
         }
     }
     else {
+        lockBoard = true;
         setTimeout (
             ()=> {
                 card1.classList.add("hidden");
                 card2.classList.add("hidden");
                 flippedcards = [];
+                lockBoard = false;   // <-- Missing line
             },1000
         );
     }
